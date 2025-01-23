@@ -1,11 +1,40 @@
 import '../styles/global.css';
+import { useState, useEffect} from 'react'
+import { Canvas } from '@react-three/fiber'
+import { useGLTF, Stage, PresentationControls} from "@react-three/drei"
+import { OrbitControls } from '@react-three/drei'
+import Earth from '../3d/Earth'
 import Navbar from '../Components/Navbar';
+import { AmbientLight } from 'three';
+
+function Model1(props) {
+  const {scene} = useGLTF("/earth.glb");
+
+  return <primitive object={scene} {...props} />
+}
+function Model2(props) {
+  const {scene} = useGLTF("/simonsite");
+
+  return <primitive object={scene} {...props} />
+}
+
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <Navbar></Navbar>
-        <h1 class="MEVAN">HEY MEVAN</h1>
+        <Canvas dpr={[1,2]} shadows camera={{position: [0,0,5], fov:110}} style={{"position": "fixed"}}>
+          <color attach="background" args={["#101010"]}/>
+          <pointLight position={[0, 5, 5]} intensity={20.5} />
+          <directionalLight position={[0, 10, 10]} intensity={2} castShadow />
+
+          <PresentationControls speed={1.5} global zoom={1}>
+            
+              <Model1 scale={50} position={[0, 2.5, -100]}/>
+              <Model2 scale={0.049} position={[0, -1, -1.2]}/>
+            
+          </PresentationControls>
+        </Canvas>
       </header>
     </div>
   );
