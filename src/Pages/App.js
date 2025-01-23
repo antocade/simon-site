@@ -19,23 +19,30 @@ function Model2(props) {
 }
 
 function App() {
+  const [fadeComplete, setFadeComplete] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {setFadeComplete(true);}, 100);
+    return () => clearTimeout(timeout);}, []);
   return (
     <div className="App">
+      
       <header className="App-header">
         <Navbar></Navbar>
-        <Canvas dpr={[1,2]} shadows camera={{position: [0,0,5], fov:110}} style={{"position": "fixed"}}>
-          <color attach="background" args={["#101010"]}/>
-          <pointLight position={[0, 5, 5]} intensity={20.5} />
-          <directionalLight position={[0, 10, 10]} intensity={2} castShadow />
-
-          <PresentationControls speed={1.5} global zoom={1}>
-            
-              <Model1 scale={50} position={[0, 2.5, -100]}/>
-              <Model2 scale={0.049} position={[0, -1, -1.2]}/>
-            
-          </PresentationControls>
-        </Canvas>
       </header>
+      <div className={`fade-overlay ${fadeComplete ? 'hidden' : ''}`}></div>
+      <Canvas dpr={[1,2]} shadows camera={{position: [0,0,5], fov:110}} style={{"position": "fixed"}}>
+        <color attach="background" args={["#101010"]}/>
+        <pointLight position={[0, 5, 5]} intensity={20.5} />
+        <directionalLight position={[0, 10, 10]} intensity={2} castShadow />
+        <PresentationControls speed={1.5} global zoom={1}>
+          
+            <Model1 scale={50} position={[0, 2.5, -100]}/>
+            <Model2 scale={0.049} position={[0, -1, -1.2]}/>
+          
+        </PresentationControls>
+      </Canvas>
+      
     </div>
   );
 }
