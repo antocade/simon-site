@@ -24,11 +24,11 @@ const router = createBrowserRouter([
     element: <App/>,
   },
   {
-    path: "blog",
+    path: "/blog",
     element: <Blog/>,
   },
   {
-    path: "about",
+    path: "/about",
     element: <About/>,
   },
 ])
