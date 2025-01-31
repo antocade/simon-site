@@ -4,6 +4,7 @@ import '../styles/global.css';
 function Blog(){
     return(
         <Navbar></Navbar>
+        
     )
 }
 
