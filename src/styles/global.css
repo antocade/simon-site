@@ -1,6 +1,9 @@
 .topnav {
   background-color: gray;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  
 }
 
 .topnav h1{
@@ -21,6 +24,13 @@
   font-size: 17px;
 }
 
+.login {
+  margin-left: auto;  /* Pushes it to the right */
+  padding-right: 200px;  /* Adds space on the right */
+  font-weight: bold;  /* Makes the text bold */
+  color: black;
+}
+
 .topnav a:hover {
   background-color: #ddd;
   color: black;
@@ -30,6 +40,7 @@
   background-color: rgb(43, 150, 185);
   color: white;
 }
+
 .fade-overlay {
   position: fixed;
   top: 0;

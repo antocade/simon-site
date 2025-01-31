@@ -1,0 +1,41 @@
+.LoginPage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Box {
+    top: 100px;
+    display: flex;
+    width: 300px;
+    height: 400px;
+    background-color: rgb(62, 62, 62);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border-radius: 20px;
+}
+.Box h1{
+    color: white;
+}
+::placeholder{
+    font-family: "Lucida Console", monospace;
+    font-size: 14px;
+    color: rgb(152, 152, 152);
+    font-weight: 600;
+}
+.User, .Pass {
+    position:relative;
+    height: 40px;
+    width: 190px;
+    border-radius: 10px;
+    color: white;
+    background-color: rgb(107, 107, 107);
+    border: 2px solid transparent;
+    outline: none;
+    font-family: "Lucida Console", monospace;
+    font-size: 14px;
+    color: rgb(224, 224, 224);
+    font-weight: 600;
+    transition: all 0.2s;
+}
