@@ -16,7 +16,9 @@
     border-radius: 20px;
 }
 .Box h1{
+    position: relative;
     color: white;
+    top: -8%;
 }
 ::placeholder{
     font-family: "Lucida Console", monospace;
@@ -26,6 +28,7 @@
 }
 .User, .Pass {
     position:relative;
+    top: -5%;
     height: 40px;
     width: 190px;
     border-radius: 10px;
