@@ -27,8 +27,8 @@ jobs:
           CI: false
       - name: Configure Git Identity
         run: |
-          git config --global user.email "your-email@example.com"
-          git config --global user.name "Your GitHub Username"
+          git config --global user.email antocade@hotmail.ca
+          git config --global user.name antocade
 
       - name: Deploy to GitHub Pages
         run: npm run deploy
