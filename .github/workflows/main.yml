@@ -25,6 +25,7 @@ jobs:
         run: npm run build
         env:
           CI: false
+      
       - name: Configure Git Identity
         run: |
           git config --global user.email antocade@hotmail.ca
