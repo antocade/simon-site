@@ -30,6 +30,7 @@ jobs:
         run: |
           git config --global user.email antocade@hotmail.ca
           git config --global user.name antocade
+          git config --global url git@github.com/antocade/simon-site
 
       - name: Deploy to GitHub Pages
         run: npm run deploy
