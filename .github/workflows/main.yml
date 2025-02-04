@@ -30,6 +30,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           repository: antocade/simon-site
+          folder: build
           token: ${{ secrets.GH_PASS }}
         # run: npm run deploy
         env:
