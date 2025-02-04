@@ -30,7 +30,7 @@ jobs:
         run: |
           git config --global user.email antocade@hotmail.ca
           git config --global user.name antocade
-          git remote set-url origin https://github.com/antocade/simon-site/
+          git remote set-url origin https://antocade:${{secrets.GH_PASS}}@github.com/antocade/simon-site.git
 
       - name: Deploy to GitHub Pages
         run: npm run deploy
