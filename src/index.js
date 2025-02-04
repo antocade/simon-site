@@ -21,6 +21,7 @@ ReactDOM.createRoot(root).render(
       <Route path="simon-site" element={<App />} />
       <Route path="blog" element={<Blog />} />
       <Route path="about" element={<About />} />
+      <Route path="*" element={<App />} />
     </Routes>
   </BrowserRouter>
 );
