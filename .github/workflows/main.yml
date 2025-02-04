@@ -25,14 +25,12 @@ jobs:
         run: npm run build
         env:
           CI: false
-      
-      - name: Configure Git Identity
-        run: |
-          git config --global user.email antocade@hotmail.ca
-          git config --global user.name antocade
-          git remote set-url origin https://antocade:${{secrets.GH_PASS}}@github.com/antocade/simon-site.git
 
       - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          repository: antocade/simon-site
+          token: ${{ secrets.GH_PASS }}
         run: npm run deploy
         env:
           CI: false
