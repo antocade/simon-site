@@ -1,11 +1,7 @@
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
-import {
-  connectFirestoreEmulator, 
-  getFirestore,
-} from "firebase/firestore";
+import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';

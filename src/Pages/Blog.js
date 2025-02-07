@@ -1,12 +1,9 @@
-import {
-    React,
-    useState,
-} from "react";
+import { React, useState } from "react";
 import '../styles/global.css';
 import Navbar from '../Components/Navbar';
 import { Gen_Btn } from "../Components/Buttons.js";
-
 import { db, auth } from '../index.js';
+import { useForm } from "react-hook-form"
 import { 
     collection, 
     doc,
@@ -64,34 +61,32 @@ function createAccount(formData) {
     })
 }
 
+
 function Blog(){
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm()
+    
+    const signIn = (data) => {
+        console.log(data)
+        //   console.log(watch("example")) // watch gets input realtime
+        let email = data.email;
+        let pass = data.password;
 
-    // function SignInForm() {
-        const [inputs, setInputs] = useState({});
-
-        const formHandler = (event) => {
-            const email = event.target.email;
-            const password = event.target.password;
-            setInputs(values => ({...values, [email]: password}))
-        }
-        
-        const signIn = (event) => {
-            event.preventDefault();
-            let email = inputs.email;
-            let password = inputs.password;
-        
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log("Logged in!");
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.log(errorCode, ": ", errorMessage);
-                })
-        }
-    // }
+        signInWithEmailAndPassword(auth, email, pass)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log("Logged in!");
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, ": ", errorMessage);
+            })
+    }
 
     return(
         <>
@@ -105,17 +100,16 @@ function Blog(){
                 <Gen_Btn theme="red" onClick={createPost}>Create Post</Gen_Btn>
             </div>
             <div>
-                <form onSubmit={signIn}>
-                    <label>email:
-                    <input type ="text" name="email" value={inputs.email || ""} onChange={formHandler}/>
-                    </label>
-                    <label>password:
-                    <input type ="text" name="password" value={inputs.password || ""} onChange={formHandler}/>
-                    </label>
-                    <input type="submit" />
-                </form>
-            </div>
+            <form onSubmit={handleSubmit(signIn)}>
+            <input defaultValue="" {...register("email", { required: true})} />
 
+            <input {...register("password", { required: true })} />
+            {errors.email && <span>This field is required</span>}
+            {errors.password && <span>This field is required</span>}
+
+            <input type="submit" />
+            </form>
+            </div>
         </>
     )
 }
