@@ -15,6 +15,7 @@ import {
 import App from './Pages/App';
 import Blog from './Pages/Blog';
 import About from './Pages/About';
+import ShortStory from './Pages/ShortStory';
 
 const root = document.getElementById("root");
 
@@ -55,6 +56,7 @@ ReactDOM.createRoot(root).render(
       <Route path="blog" element={<Blog />} />
       <Route path="about" element={<About />} />
       <Route path="*" element={<App />} />
+      <Route path="short-story" element={<ShortStory/>} />
     </Routes>
   </BrowserRouter>
 );
