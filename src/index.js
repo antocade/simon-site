@@ -50,7 +50,7 @@ export const db = getFirestore(app)
 // connectFirestoreEmulator(db, 'localhost', 8080)
 
 ReactDOM.createRoot(root).render(
-  <BrowserRouter>
+  <BrowserRouter basename="/simon-site">
     <Routes>
       <Route index element={<App />} />
       <Route path="simon-site" element={<App />} />
