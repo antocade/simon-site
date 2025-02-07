@@ -1,11 +1,9 @@
-import {
-    React,
-} from "react";
+import { React, useState } from "react";
 import '../styles/global.css';
 import Navbar from '../Components/Navbar';
 import { Gen_Btn } from "../Components/Buttons.js";
-
-import { db } from '../index.js';
+import { db, auth } from '../index.js';
+import { useForm } from "react-hook-form"
 import { 
     collection, 
     doc,
@@ -17,6 +15,7 @@ import {
     getFirestore, 
     orderBy
 } from "firebase/firestore";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 
 async function getAllPosts() {
@@ -46,7 +45,49 @@ async function createPost() {
     }
 }
 
+// Not working yet
+function createAccount(formData) {
+    let email = formData.get("email");
+    let password = formData.get("password")
+
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+        const user = userCredential.user;
+        //etc
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+    })
+}
+
+
 function Blog(){
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm()
+    
+    const signIn = (data) => {
+        console.log(data)
+        //   console.log(watch("example")) // watch gets input realtime
+        let email = data.email;
+        let pass = data.password;
+
+        signInWithEmailAndPassword(auth, email, pass)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log("Logged in!");
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, ": ", errorMessage);
+            })
+    }
+
     return(
         <>
             <Navbar></Navbar>
@@ -57,6 +98,17 @@ function Blog(){
             </div>
             <div>
                 <Gen_Btn theme="red" onClick={createPost}>Create Post</Gen_Btn>
+            </div>
+            <div>
+            <form onSubmit={handleSubmit(signIn)}>
+            <input defaultValue="" {...register("email", { required: true})} />
+
+            <input {...register("password", { required: true })} />
+            {errors.email && <span>This field is required</span>}
+            {errors.password && <span>This field is required</span>}
+
+            <input type="submit" />
+            </form>
             </div>
         </>
     )
