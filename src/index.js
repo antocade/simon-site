@@ -1,6 +1,10 @@
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
-import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
+import {
+  connectFirestoreEmulator, 
+  getFirestore,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -43,6 +47,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const analytics = getAnalytics(app);
+
+export const auth = getAuth();
 
 export const db = getFirestore(app)
 // connectFirestoreEmulator(db, 'localhost', 8080)
