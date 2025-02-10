@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, createElement } from "react";
 import '../styles/global.css';
 import Navbar from '../Components/Navbar';
 import { Gen_Btn } from "../Components/Buttons.js";
@@ -23,8 +23,17 @@ function importAllStories(r) {
     return files;
   }
   
-const storiesObj = importAllStories(require.context('../story-upload', false, /\.(pdf)$/));
-console.log(storiesObj)
+const stories = importAllStories(require.context('../story-upload', false, /\.(pdf)$/));
+// console.log(stories)
+
+function Tile({ story }) {
+    return createElement(
+      'h1',
+      { className: 'greeting' },
+      story
+    );
+  }
+
 
 async function getAllPosts() {
     const postsQuery = query(
@@ -85,6 +94,7 @@ function Blog(){
 
     const searchElement = watch("toSearch");
     // console.log(watch("toSearch"))
+
     return(
         <>
             <Navbar></Navbar>
@@ -103,6 +113,12 @@ function Blog(){
                 ) : (
                 ""
                 )}
+            </div>
+
+            <div>
+                {
+                    stories.map(e => <Tile story={e}/>)
+                }
             </div>
 
             <h1>DB Test</h1>
