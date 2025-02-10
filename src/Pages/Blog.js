@@ -18,12 +18,13 @@ import {
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 function importAllStories(r) {
-    let files = {};
-    r.keys().map((item, index) => { files[item.replace('./', '')] = r(item); });
+    let files = [];
+    files = r.keys();
     return files;
   }
   
-const stories = importAllStories(require.context('../story-upload', false, /\.(pdf)$/));
+const storiesObj = importAllStories(require.context('../story-upload', false, /\.(pdf)$/));
+console.log(storiesObj)
 
 async function getAllPosts() {
     const postsQuery = query(
