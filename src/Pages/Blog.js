@@ -17,6 +17,13 @@ import {
 } from "firebase/firestore";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
+function importAllStories(r) {
+    let files = {};
+    r.keys().map((item, index) => { files[item.replace('./', '')] = r(item); });
+    return files;
+  }
+  
+const stories = importAllStories(require.context('../story-upload', false, /\.(pdf)$/));
 
 async function getAllPosts() {
     const postsQuery = query(
@@ -45,23 +52,6 @@ async function createPost() {
     }
 }
 
-// Not working yet
-function createAccount(formData) {
-    let email = formData.get("email");
-    let password = formData.get("password")
-
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-        const user = userCredential.user;
-        //etc
-    })
-    .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-    })
-}
-
-
 function Blog(){
     const {
         register,
@@ -88,10 +78,33 @@ function Blog(){
             })
     }
 
+    const searchBar = (data) => {
+        //actually search
+    }
+
+    const searchElement = watch("toSearch");
+    // console.log(watch("toSearch"))
     return(
         <>
             <Navbar></Navbar>
-            <h1>Siiiiick DB Test</h1>
+            <div>
+                <form onSubmit={handleSubmit(searchBar)}>
+                    <input defaultValue="" {...register("toSearch")} />
+                    {/* <input type="submit" /> */}
+                </form>
+            </div>
+
+            <div>
+                {searchElement ? (
+                <>
+                    input: {searchElement}
+                </>
+                ) : (
+                ""
+                )}
+            </div>
+
+            <h1>DB Test</h1>
             <p>View in console, check posts on Firebase</p>
             <div>
                 <Gen_Btn onClick={getAllPosts}>List Posts</Gen_Btn>
