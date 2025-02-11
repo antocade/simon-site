@@ -1,5 +1,6 @@
 import { React, useState, createElement } from "react";
 import '../styles/global.css';
+import '../styles/storyTiles.css';
 import Navbar from '../Components/Navbar';
 import { Gen_Btn } from "../Components/Buttons.js";
 import { db, auth } from '../index.js';
@@ -29,7 +30,7 @@ const stories = importAllStories(require.context('../story-upload', false, /\.(p
 function Tile({ story }) {
     return createElement(
       'h1',
-      { className: 'greeting' },
+      { className: 'tile' },
       story
     );
 }
@@ -92,16 +93,14 @@ function Blog(){
     }
 
     const searchElement = watch("toSearch");
-    var visibleTiles = [];
-
-    visibleTiles = stories.filter(str => str.includes(searchElement));
-    console.log(visibleTiles);
     
-    // class Tile extends React.Component {
-    //     // function hide() {
-    //     //     setState(show({show: false}))
-    //     // }
-    // }
+    var visibleTiles = [];
+    if (searchElement == "" || searchElement == undefined) {
+        visibleTiles = stories;
+    } else {
+        visibleTiles = stories.filter(str => str.includes(searchElement));
+    }
+    console.log(visibleTiles);
 
     return(
         <>
@@ -124,9 +123,8 @@ function Blog(){
             </div>
 
             <div>
-                {//show && (
-                    stories.map(e => <Tile story={e}/>)
-                   // )
+                {
+                    visibleTiles.map(e => <Tile story={e} show={true}/>)
                 }
             </div>
 
