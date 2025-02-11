@@ -32,8 +32,7 @@ function Tile({ story }) {
       { className: 'greeting' },
       story
     );
-  }
-
+}
 
 async function getAllPosts() {
     const postsQuery = query(
@@ -93,7 +92,16 @@ function Blog(){
     }
 
     const searchElement = watch("toSearch");
-    // console.log(watch("toSearch"))
+    var visibleTiles = [];
+
+    visibleTiles = stories.filter(str => str.includes(searchElement));
+    console.log(visibleTiles);
+    
+    // class Tile extends React.Component {
+    //     // function hide() {
+    //     //     setState(show({show: false}))
+    //     // }
+    // }
 
     return(
         <>
@@ -116,8 +124,9 @@ function Blog(){
             </div>
 
             <div>
-                {
+                {//show && (
                     stories.map(e => <Tile story={e}/>)
+                   // )
                 }
             </div>
 
