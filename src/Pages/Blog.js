@@ -1,5 +1,6 @@
-import { React, useState } from "react";
+import { React, useState, createElement } from "react";
 import '../styles/global.css';
+import '../styles/storyTiles.css';
 import Navbar from '../Components/Navbar';
 import { Gen_Btn } from "../Components/Buttons.js";
 import { db, auth } from '../index.js';
@@ -17,6 +18,22 @@ import {
 } from "firebase/firestore";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
+function importAllStories(r) {
+    let files = [];
+    files = r.keys();
+    return files;
+  }
+  
+const stories = importAllStories(require.context('../story-upload', false, /\.(pdf)$/));
+// console.log(stories)
+
+function Tile({ story }) {
+    return createElement(
+      'h1',
+      { className: 'tile' },
+      story
+    );
+}
 
 async function getAllPosts() {
     const postsQuery = query(
@@ -45,23 +62,6 @@ async function createPost() {
     }
 }
 
-// Not working yet
-function createAccount(formData) {
-    let email = formData.get("email");
-    let password = formData.get("password")
-
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-        const user = userCredential.user;
-        //etc
-    })
-    .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-    })
-}
-
-
 function Blog(){
     const {
         register,
@@ -88,10 +88,47 @@ function Blog(){
             })
     }
 
+    const searchBar = (data) => {
+        //actually search
+    }
+
+    const searchElement = watch("toSearch");
+    
+    var visibleTiles = [];
+    if (searchElement == "" || searchElement == undefined) {
+        visibleTiles = stories;
+    } else {
+        visibleTiles = stories.filter(str => str.includes(searchElement));
+    }
+    console.log(visibleTiles);
+
     return(
         <>
             <Navbar></Navbar>
-            <h1>Siiiiick DB Test</h1>
+            <div>
+                <form onSubmit={handleSubmit(searchBar)}>
+                    <input defaultValue="" {...register("toSearch")} />
+                    {/* <input type="submit" /> */}
+                </form>
+            </div>
+
+            <div>
+                {searchElement ? (
+                <>
+                    input: {searchElement}
+                </>
+                ) : (
+                ""
+                )}
+            </div>
+
+            <div>
+                {
+                    visibleTiles.map(e => <Tile story={e} show={true}/>)
+                }
+            </div>
+
+            <h1>DB Test</h1>
             <p>View in console, check posts on Firebase</p>
             <div>
                 <Gen_Btn onClick={getAllPosts}>List Posts</Gen_Btn>
