@@ -1,5 +1,32 @@
+.searchbar {
+    padding: 15px;
+}
+
+.searchbar input {
+    display: grid;
+    margin: auto;
+    height: 30px;
+    width: 70%;
+}
+
+.grid {
+    display: grid;
+    padding: 10px;
+    /* justify-content: 50px; */
+    /* column-gap: 50px; */
+    grid-template-columns: auto auto auto auto;
+    gap: 50px 50px;
+    background-color: grey;
+}
+
+.tile {
+    height: 200px;
+    /* width: 200px; */
+    /* margin: auto; */
+    border: 1px solid black;
+    background-color: azure;
+}
 
 .tile:hover {
-    color: red;
-
+    transform: scale(1.05)
 }

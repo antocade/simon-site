@@ -1,4 +1,4 @@
-import { React, useState, createElement } from "react";
+import { React, createElement } from "react";
 import '../styles/global.css';
 import '../styles/storyTiles.css';
 import Navbar from '../Components/Navbar';
@@ -7,17 +7,14 @@ import { db, auth } from '../index.js';
 import { useForm } from "react-hook-form"
 import { 
     collection, 
-    doc,
     getDocs,
     addDoc,
     query,
-    limit, 
-    where,
-    getFirestore, 
-    orderBy
+    limit,
 } from "firebase/firestore";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
+// -- Import pdfs -- //
 function importAllStories(r) {
     let files = [];
     files = r.keys();
@@ -25,16 +22,20 @@ function importAllStories(r) {
   }
   
 const stories = importAllStories(require.context('../story-upload', false, /\.(pdf)$/));
-// console.log(stories)
 
+// -- Tile Builder -- //
 function Tile({ story }) {
     return createElement(
-      'h1',
-      { className: 'tile' },
-      story
+        'div',
+        { className: 'tile' },
+        createElement('h1',
+            { className: 'tile-header' },
+            story
+        )
     );
 }
 
+// -- Firebase stuff *move to login page* -- //
 async function getAllPosts() {
     const postsQuery = query(
         collection(db, 'posts'),
@@ -72,7 +73,6 @@ function Blog(){
     
     const signIn = (data) => {
         console.log(data)
-        //   console.log(watch("example")) // watch gets input realtime
         let email = data.email;
         let pass = data.password;
 
@@ -88,10 +88,7 @@ function Blog(){
             })
     }
 
-    const searchBar = (data) => {
-        //actually search
-    }
-
+    //Live searchbar
     const searchElement = watch("toSearch");
     
     var visibleTiles = [];
@@ -106,9 +103,8 @@ function Blog(){
         <>
             <Navbar></Navbar>
             <div>
-                <form onSubmit={handleSubmit(searchBar)}>
+                <form class="searchbar">
                     <input defaultValue="" {...register("toSearch")} />
-                    {/* <input type="submit" /> */}
                 </form>
             </div>
 
@@ -122,9 +118,10 @@ function Blog(){
                 )}
             </div>
 
-            <div>
+            <div class="grid">
                 {
-                    visibleTiles.map(e => <Tile story={e} show={true}/>)
+                    
+                    visibleTiles.map(e => <Tile story={e}/>)
                 }
             </div>
 
