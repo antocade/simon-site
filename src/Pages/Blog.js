@@ -1,8 +1,8 @@
-import { React, createElement } from "react";
+import { React, createElement, useState } from "react";
 import '../styles/global.css';
 import '../styles/storyTiles.css';
 import Navbar from '../Components/Navbar';
-import { Gen_Btn } from "../Components/Buttons.js";
+import { GenBtn, TabContainer, Tab } from "../Components/Buttons.js";
 import { db, auth } from '../index.js';
 import { useForm } from "react-hook-form"
 import { 
@@ -70,6 +70,15 @@ function Blog(){
         watch,
         formState: { errors },
     } = useForm()
+
+    const [ activeTab, setActiveTab ] = useState(0);
+    
+    const selectTab = (e) => {
+        const tabIndex = parseInt(e.target.id);
+        if (tabIndex != activeTab) {
+            setActiveTab(tabIndex);
+        }
+    }
     
     const signIn = (data) => {
         console.log(data)
@@ -106,6 +115,13 @@ function Blog(){
                 <form class="searchbar">
                     <input defaultValue="" {...register("toSearch")} />
                 </form>
+                <TabContainer>
+                    {/* Start on sorting by most recent */}
+                    <Tab onClick={selectTab} activeTab={activeTab === 0} id={0}>Most Recent</Tab>
+                    <Tab onClick={selectTab} activeTab={activeTab === 1} id={1}>Oldest</Tab>
+                    <Tab onClick={selectTab} activeTab={activeTab === 2} id={2}>Most Commented</Tab>
+                    <Tab onClick={selectTab} activeTab={activeTab === 3} id={3}>Least Commented</Tab>
+                </TabContainer>
             </div>
 
             <div>
@@ -128,10 +144,10 @@ function Blog(){
             <h1>DB Test</h1>
             <p>View in console, check posts on Firebase</p>
             <div>
-                <Gen_Btn onClick={getAllPosts}>List Posts</Gen_Btn>
+                <GenBtn onClick={getAllPosts}>List Posts</GenBtn>
             </div>
             <div>
-                <Gen_Btn theme="red" onClick={createPost}>Create Post</Gen_Btn>
+                <GenBtn theme="red" onClick={createPost}>Create Post</GenBtn>
             </div>
             <div>
             <form onSubmit={handleSubmit(signIn)}>
