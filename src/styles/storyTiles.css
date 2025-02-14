@@ -1,3 +1,12 @@
+.main-container {
+    width: 95%;
+    margin: auto;
+    background-color: lightblue;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    min-height: 600px;
+}
+
 .searchbar {
     padding: 15px;
 }
@@ -6,17 +15,22 @@
     display: grid;
     margin: auto;
     height: 30px;
-    width: 70%;
+    width: 50%;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 25px;
 }
 
 .grid {
+    width: 97%;
+    margin: auto;
     display: grid;
     padding: 10px;
     /* justify-content: 50px; */
     /* column-gap: 50px; */
     grid-template-columns: auto auto auto auto;
     gap: 50px 50px;
-    background-color: grey;
+    /* background-color: grey; */ /*debug*/
 }
 
 .tile {

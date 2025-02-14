@@ -2,7 +2,7 @@ import { React, createElement, useState } from "react";
 import '../styles/global.css';
 import '../styles/storyTiles.css';
 import Navbar from '../Components/Navbar';
-import { GenBtn, TabContainer, Tab } from "../Components/Buttons.js";
+import { GenBtn, TabContainer, Tab, TabL, TabR } from "../Components/Buttons.js";
 import { db, auth } from '../index.js';
 import { useForm } from "react-hook-form"
 import { 
@@ -111,34 +111,33 @@ function Blog(){
     return(
         <>
             <Navbar></Navbar>
-            <div>
+            <div class="main-container">
                 <form class="searchbar">
                     <input defaultValue="" {...register("toSearch")} />
                 </form>
                 <TabContainer>
                     {/* Start on sorting by most recent */}
-                    <Tab onClick={selectTab} activeTab={activeTab === 0} id={0}>Most Recent</Tab>
+                    <TabL onClick={selectTab} activeTab={activeTab === 0} id={0}>Most Recent</TabL>
                     <Tab onClick={selectTab} activeTab={activeTab === 1} id={1}>Oldest</Tab>
                     <Tab onClick={selectTab} activeTab={activeTab === 2} id={2}>Most Commented</Tab>
-                    <Tab onClick={selectTab} activeTab={activeTab === 3} id={3}>Least Commented</Tab>
+                    <TabR onClick={selectTab} activeTab={activeTab === 3} id={3}>Least Commented</TabR>
                 </TabContainer>
-            </div>
+            
+                {/* <div>
+                    {searchElement ? (
+                    <>
+                        input: {searchElement}
+                    </>
+                    ) : (
+                    ""
+                    )}
+                </div> */}
 
-            <div>
-                {searchElement ? (
-                <>
-                    input: {searchElement}
-                </>
-                ) : (
-                ""
-                )}
-            </div>
-
-            <div class="grid">
-                {
-                    
-                    visibleTiles.map(e => <Tile story={e}/>)
-                }
+                <div class="grid">
+                    {
+                        visibleTiles.map(e => <Tile story={e}/>)
+                    }
+                </div>
             </div>
 
             <h1>DB Test</h1>

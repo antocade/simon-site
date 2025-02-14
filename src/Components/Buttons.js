@@ -34,18 +34,20 @@ GenBtn.defaultProps = {
 // -- Tab Buttons -- //
 const TabContainer = styled.div`
     // overflow: hidden;
-    background: #fff;
     font-family: Open Sans;
     height: 3em;
     width: 40%;
     margin: auto;
+    padding-bottom: 10px;
+
     display: grid;
     grid-template-columns: auto auto auto auto;
     justify-content: center;
     column-gap: 0px;`
 
 const Tab = styled.div`
-    border: none;
+    border: 1.5px black solid;
+    border-right: 0px;
     outline: none;
     cursor: pointer;
     width: 100px;
@@ -60,9 +62,26 @@ const Tab = styled.div`
     opacity: 0.8;
     }`
 
+const TabL = styled(Tab)`
+    border-top-left-radius: 3.5px;
+    border-bottom-left-radius: 3.5px;`
+
+const TabR = styled(Tab)`
+    border-top-right-radius: 3.5px;
+    border-bottom-right-radius: 3.5px;
+    border-right: 1.5px black solid;`
+
 Tab.defaultProps = {
+    theme: "blue",
+}
+
+TabL.defaultProps = {
+    theme: "blue",
+}
+
+TabR.defaultProps = {
     theme: "blue",
 }
 // -- -- //
 
-export { GenBtn, TabContainer, Tab };
+export { GenBtn, TabContainer, Tab, TabL, TabR };
