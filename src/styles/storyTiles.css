@@ -44,3 +44,7 @@
 .tile:hover {
     transform: scale(1.05)
 }
+
+.tile-desc {
+    text-overflow: ellipsis;
+}

@@ -1,4 +1,4 @@
-import { React, createElement, useState } from "react";
+import { React, createElement, useState, useEffect } from "react";
 import '../styles/global.css';
 import '../styles/storyTiles.css';
 import Navbar from '../Components/Navbar';
@@ -21,16 +21,23 @@ function importAllStories(r) {
     return files;
   }
   
-const stories = importAllStories(require.context('../story-upload', false, /\.(pdf)$/));
+const stories = importAllStories(require.context('../../public/test', false, /\.(pdf|docx)$/));
+var loadedFiles = false;
+var namedFileList = new Map();
 
 // -- Tile Builder -- //
-function Tile({ story }) {
+function Tile({ story, file }) {
+    let description = file
     return createElement(
         'div',
         { className: 'tile' },
         createElement('h1',
             { className: 'tile-header' },
             story
+        ),
+        createElement('p',
+            { className: 'tile-desc' },
+            description
         )
     );
 }
@@ -63,6 +70,25 @@ async function createPost() {
     }
 }
 
+function loadDescs() {
+    stories.forEach((storyName) => {
+        getFileContents(storyName)
+    });
+
+    loadedFiles = true;
+}
+
+function getFileContents(file) {
+    var filename = "./test/" + file
+    fetch(filename) // fetch text file
+        .then((resp) => resp.text())
+        .then(data => {
+            const arr = data.split(/\r?\n/);
+            namedFileList.set(file, arr)
+        }); 
+}
+
+
 function Blog(){
     const {
         register,
@@ -79,7 +105,11 @@ function Blog(){
             setActiveTab(tabIndex);
         }
     }
-    
+
+    if (!loadedFiles) {
+        loadDescs()
+    }
+
     const signIn = (data) => {
         console.log(data)
         let email = data.email;
@@ -132,10 +162,9 @@ function Blog(){
                     ""
                     )}
                 </div> */}
-
-                <div class="grid">
+                <div class="grid">   
                     {
-                        visibleTiles.map(e => <Tile story={e}/>)
+                        visibleTiles.map(e => <Tile story={e} file={namedFileList.get(e)}/>)
                     }
                 </div>
             </div>
