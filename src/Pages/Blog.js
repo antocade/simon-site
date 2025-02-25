@@ -70,24 +70,6 @@ async function createPost() {
     }
 }
 
-function loadDescs() {
-    stories.forEach((storyName) => {
-        getFileContents(storyName)
-    });
-
-    loadedFiles = true;
-}
-
-function getFileContents(file) {
-    var filename = "./test/" + file
-    fetch(filename) // fetch text file
-        .then((resp) => resp.text())
-        .then(data => {
-            const arr = data.split(/\r?\n/);
-            namedFileList.set(file, arr)
-        }); 
-}
-
 
 function Blog(){
     const {
@@ -98,6 +80,7 @@ function Blog(){
     } = useForm()
 
     const [ activeTab, setActiveTab ] = useState(0);
+    const [ desc, setDesc ] = useState([])
     
     const selectTab = (e) => {
         const tabIndex = parseInt(e.target.id);
@@ -108,6 +91,25 @@ function Blog(){
 
     if (!loadedFiles) {
         loadDescs()
+    }
+
+    function loadDescs() {
+        stories.forEach((storyName) => {
+            getFileContents(storyName)
+        });
+    
+        loadedFiles = true;
+    }
+    
+    function getFileContents(file) {
+        var filename = "./test/" + file
+        fetch(filename) // fetch text file
+            .then((resp) => resp.text())
+            .then(data => {
+                const arr = data.split(/\r?\n/);
+                namedFileList.set(file, arr)
+                setDesc(arr)
+            }); 
     }
 
     const signIn = (data) => {
