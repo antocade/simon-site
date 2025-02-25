@@ -41,6 +41,11 @@ function Tile({ story, file }) {
     return createElement(
         'div',
         { className: 'tile' },
+        createElement('img', //"../public/img_placeholder.jpg",
+            { className: 'tile-img',
+                src: "img_placeholder.jpg"
+            },
+        ),
         createElement('h1',
             { className: 'tile-header' },
             slicedName

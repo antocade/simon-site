@@ -34,7 +34,7 @@
 }
 
 .tile {
-    height: 200px;
+    height: 400px;
     /* width: 200px; */
     /* margin: auto; */
     border: 1px solid black;
@@ -47,4 +47,9 @@
 
 .tile-desc {
     text-overflow: ellipsis;
+}
+
+.tile-img {
+    height: 50%;
+    width: auto;
 }
