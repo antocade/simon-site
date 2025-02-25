@@ -35,17 +35,23 @@ var namedFileList = new Map();
 // -- Tile Builder -- //
 function Tile({ story, file }) {
     const description = file
+    const slicedName = story.slice(0, (story.length - 8))
+    const docDate = story.slice(-8)
 
     return createElement(
         'div',
         { className: 'tile' },
         createElement('h1',
             { className: 'tile-header' },
-            story
+            slicedName
         ),
         createElement('p',
             { className: 'tile-desc' },
             description
+        ),
+        createElement('span',
+            { className: 'date-tag'},
+            docDate
         )
     );
 }
