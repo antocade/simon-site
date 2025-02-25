@@ -1,40 +1,67 @@
-import { React, useState, createElement } from "react";
+import { React, createElement, useState, useEffect } from "react";
 import '../styles/global.css';
 import '../styles/storyTiles.css';
 import Navbar from '../Components/Navbar';
-import { Gen_Btn } from "../Components/Buttons.js";
+import { GenBtn, TabContainer, Tab, TabL, TabR } from "../Components/Buttons.js";
 import { db, auth } from '../index.js';
 import { useForm } from "react-hook-form"
 import { 
     collection, 
-    doc,
     getDocs,
     addDoc,
     query,
-    limit, 
-    where,
-    getFirestore, 
-    orderBy
+    limit,
 } from "firebase/firestore";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
+// -- Import pdfs -- //
 function importAllStories(r) {
     let files = [];
     files = r.keys();
     return files;
   }
   
-const stories = importAllStories(require.context('../story-upload', false, /\.(pdf)$/));
-// console.log(stories)
+const stories = importAllStories(require.context('../../public/test', false, /\.(pdf|docx)$/));
+let i = 0
+stories.forEach((name) => {
+    name = name.slice(2, (name.length - 5))
+    stories[i] = name;
+    i++;
+})
 
-function Tile({ story }) {
+var loadedFiles = false;
+var namedFileList = new Map();
+
+// -- Tile Builder -- //
+function Tile({ story, file }) {
+    const description = file
+    const slicedName = story.slice(0, (story.length - 8))
+    const docDate = story.slice(-8)
+
     return createElement(
-      'h1',
-      { className: 'tile' },
-      story
+        'div',
+        { className: 'tile' },
+        createElement('img', //"../public/img_placeholder.jpg",
+            { className: 'tile-img',
+                src: "img_placeholder.jpg"
+            },
+        ),
+        createElement('h1',
+            { className: 'tile-header' },
+            slicedName
+        ),
+        createElement('p',
+            { className: 'tile-desc' },
+            description
+        ),
+        createElement('span',
+            { className: 'date-tag'},
+            docDate
+        )
     );
 }
 
+// -- Firebase stuff *move to login page* -- //
 async function getAllPosts() {
     const postsQuery = query(
         collection(db, 'posts'),
@@ -62,6 +89,7 @@ async function createPost() {
     }
 }
 
+
 function Blog(){
     const {
         register,
@@ -69,10 +97,42 @@ function Blog(){
         watch,
         formState: { errors },
     } = useForm()
+
+    const [ activeTab, setActiveTab ] = useState(0);
+    const [ desc, setDesc ] = useState([])
     
+    const selectTab = (e) => {
+        const tabIndex = parseInt(e.target.id);
+        if (tabIndex != activeTab) {
+            setActiveTab(tabIndex);
+        }
+    }
+
+    if (!loadedFiles) {
+        loadDescs()
+    }
+
+    function loadDescs() {
+        stories.forEach((storyName) => {
+            getFileContents(storyName)
+        });
+    
+        loadedFiles = true;
+    }
+    
+    function getFileContents(file) {
+        var filename = "./test/" + file + ".docx"
+        fetch(filename) // fetch text file
+            .then((resp) => resp.text())
+            .then(data => {
+                const arr = data.split(/\r?\n/);
+                namedFileList.set(file, arr)
+                setDesc(arr)
+            }); 
+    }
+
     const signIn = (data) => {
         console.log(data)
-        //   console.log(watch("example")) // watch gets input realtime
         let email = data.email;
         let pass = data.password;
 
@@ -88,10 +148,7 @@ function Blog(){
             })
     }
 
-    const searchBar = (data) => {
-        //actually search
-    }
-
+    //Live searchbar
     const searchElement = watch("toSearch");
     
     var visibleTiles = [];
@@ -105,36 +162,41 @@ function Blog(){
     return(
         <>
             <Navbar></Navbar>
-            <div>
-                <form onSubmit={handleSubmit(searchBar)}>
+            <div class="main-container">
+                <form class="searchbar">
                     <input defaultValue="" {...register("toSearch")} />
-                    {/* <input type="submit" /> */}
                 </form>
-            </div>
-
-            <div>
-                {searchElement ? (
-                <>
-                    input: {searchElement}
-                </>
-                ) : (
-                ""
-                )}
-            </div>
-
-            <div>
-                {
-                    visibleTiles.map(e => <Tile story={e} show={true}/>)
-                }
+                <TabContainer>
+                    {/* Start on sorting by most recent */}
+                    <TabL onClick={selectTab} activeTab={activeTab === 0} id={0}>Most Recent</TabL>
+                    <Tab onClick={selectTab} activeTab={activeTab === 1} id={1}>Oldest</Tab>
+                    <Tab onClick={selectTab} activeTab={activeTab === 2} id={2}>Most Commented</Tab>
+                    <TabR onClick={selectTab} activeTab={activeTab === 3} id={3}>Least Commented</TabR>
+                </TabContainer>
+            
+                {/* <div>
+                    {searchElement ? (
+                    <>
+                        input: {searchElement}
+                    </>
+                    ) : (
+                    ""
+                    )}
+                </div> */}
+                <div class="grid">   
+                    {
+                        visibleTiles.map(e => <Tile story={e} file={namedFileList.get(e)}/>)
+                    }
+                </div>
             </div>
 
             <h1>DB Test</h1>
             <p>View in console, check posts on Firebase</p>
             <div>
-                <Gen_Btn onClick={getAllPosts}>List Posts</Gen_Btn>
+                <GenBtn onClick={getAllPosts}>List Posts</GenBtn>
             </div>
             <div>
-                <Gen_Btn theme="red" onClick={createPost}>Create Post</Gen_Btn>
+                <GenBtn theme="red" onClick={createPost}>Create Post</GenBtn>
             </div>
             <div>
             <form onSubmit={handleSubmit(signIn)}>
