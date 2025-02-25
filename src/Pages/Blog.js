@@ -22,12 +22,20 @@ function importAllStories(r) {
   }
   
 const stories = importAllStories(require.context('../../public/test', false, /\.(pdf|docx)$/));
+let i = 0
+stories.forEach((name) => {
+    name = name.slice(2, (name.length - 5))
+    stories[i] = name;
+    i++;
+})
+
 var loadedFiles = false;
 var namedFileList = new Map();
 
 // -- Tile Builder -- //
 function Tile({ story, file }) {
-    let description = file
+    const description = file
+
     return createElement(
         'div',
         { className: 'tile' },
@@ -102,7 +110,7 @@ function Blog(){
     }
     
     function getFileContents(file) {
-        var filename = "./test/" + file
+        var filename = "./test/" + file + ".docx"
         fetch(filename) // fetch text file
             .then((resp) => resp.text())
             .then(data => {
