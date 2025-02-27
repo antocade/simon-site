@@ -83,7 +83,7 @@ function Blog(){
 
     if (page != null) {
         console.log(page)
-        return <Navigate to="/StoryTemplate" />
+        return <Navigate to={"/StoryTemplate#" + page} />
     }
 
     if (!loadedFiles) {
