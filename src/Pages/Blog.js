@@ -33,35 +33,6 @@ stories.forEach((name) => {
 var loadedFiles = false;
 var namedFileList = new Map();
 
-// -- Firebase stuff *move to login page* -- //
-// async function getAllPosts() {
-//     const postsQuery = query(
-//         collection(db, 'posts'),
-//         limit(10)
-//     );
-
-//     const querySnapshot = await getDocs(postsQuery);
-//     querySnapshot.forEach((post) => {
-//         console.log(`Post Name: ${post.id} | Post Data: ${JSON.stringify(post.data())}`);
-//     });
-// }
-
-// async function createPost() {
-//     let postDate = new Date().toLocaleString();
-
-//     try {
-//         const docRef = await addDoc(collection(db, "comments"), {
-//             type: "comment",
-//             date: postDate,
-//             msg: "test"
-//         });
-//         console.log("Document written with ID: ", docRef.id);
-//     } catch (e) {
-//         console.error("Error adding document: ", e);
-//     }
-// }
-
-
 function Blog(){
     const {
         register,
@@ -113,8 +84,8 @@ function Blog(){
     // -- Tile Builder -- //
     const Tile = ({ story, file }) => {
         const description = file
-        const slicedName = story.slice(0, (story.length - 8))
-        const docDate = story.slice(-8)
+        const slicedName = story.slice(0, (story.length - 9))
+        const docDate = story.slice(-7)
 
         return createElement(
             'div',
