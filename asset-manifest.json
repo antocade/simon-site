@@ -1,15 +1,16 @@
 {
   "files": {
     "main.css": "/simon-site/static/css/main.e2651a3f.css",
-    "main.js": "/simon-site/static/js/main.b66198e2.js",
+    "main.js": "/simon-site/static/js/main.9b141aa3.js",
     "index.html": "/simon-site/index.html",
-    "static/media/exampleWordDoc1 02-25-25.docx": "/simon-site/static/media/exampleWordDoc1 02-25-25.33077e5875beb52212bf.docx",
-    "static/media/exampleWordDoc2 01-25-25.docx": "/simon-site/static/media/exampleWordDoc2 01-25-25.db346d691d7acc4dc262.docx",
+    "static/media/helloworld.pdf": "/simon-site/static/media/helloworld.831f7ff3840ba0bf183a.pdf",
+    "static/media/exampleWordDoc1_02-25-25.docx": "/simon-site/static/media/exampleWordDoc1_02-25-25.33077e5875beb52212bf.docx",
+    "static/media/exampleWordDoc2_01-25-25.docx": "/simon-site/static/media/exampleWordDoc2_01-25-25.db346d691d7acc4dc262.docx",
     "main.e2651a3f.css.map": "/simon-site/static/css/main.e2651a3f.css.map",
-    "main.b66198e2.js.map": "/simon-site/static/js/main.b66198e2.js.map"
+    "main.9b141aa3.js.map": "/simon-site/static/js/main.9b141aa3.js.map"
   },
   "entrypoints": [
     "static/css/main.e2651a3f.css",
-    "static/js/main.b66198e2.js"
+    "static/js/main.9b141aa3.js"
   ]
 }
