@@ -11,3 +11,31 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.tile {
+  display: inline-block; 
+  width: 100%; 
+  max-width: 34vw; 
+  overflow: hidden; 
+  text-align: center; 
+}
+
+.tile-img {
+  display: block; 
+  max-width: 100%; 
+  height: auto;
+}
+
+.tile-header,
+.tile-desc {
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  max-width: 100%; 
+  margin: 5px 0; 
+}
+
+.date-tag {
+  font-size: 12px; 
+  margin-top: 5px;
+}
