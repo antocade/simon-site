@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/simon-site/static/css/main.c884a584.css",
+    "main.css": "/simon-site/static/css/main.dd14200f.css",
     "main.js": "/simon-site/static/js/main.10d70026.js",
     "index.html": "/simon-site/index.html",
     "static/media/exampleWordDoc1_02-25-25.docx": "/simon-site/static/media/exampleWordDoc1_02-25-25.33077e5875beb52212bf.docx",
     "static/media/Test_Title_Doc_03-01-25.docx": "/simon-site/static/media/Test_Title_Doc_03-01-25.b0a2c0f8a8d4462dcd76.docx",
     "static/media/exampleWordDoc2_01-25-25.docx": "/simon-site/static/media/exampleWordDoc2_01-25-25.db346d691d7acc4dc262.docx",
-    "main.c884a584.css.map": "/simon-site/static/css/main.c884a584.css.map",
+    "main.dd14200f.css.map": "/simon-site/static/css/main.dd14200f.css.map",
     "main.10d70026.js.map": "/simon-site/static/js/main.10d70026.js.map"
   },
   "entrypoints": [
-    "static/css/main.c884a584.css",
+    "static/css/main.dd14200f.css",
     "static/js/main.10d70026.js"
   ]
 }
