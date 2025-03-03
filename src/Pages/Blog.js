@@ -81,7 +81,7 @@ function Blog(){
     // -- Tile Builder -- //
     const Tile = ({ story, file }) => {
         const description = file
-        const slicedName = story.slice(0, (story.length - 9))
+        const slicedName = story.slice(0, (story.length - 9)).replaceAll("_", " ")
         const docDate = story.slice(-7)
 
         return createElement(

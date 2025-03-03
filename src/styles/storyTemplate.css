@@ -1,0 +1,13 @@
+.docSection {
+    width: 95%;
+    margin: auto;
+}
+
+.display-linebreak {
+    white-space: pre-line;
+}
+
+.storyBottomBar {
+    width: 95%;
+    border: 0.5px solid lightgray;
+}

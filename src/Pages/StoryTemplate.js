@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import Navbar from '../Components/Navbar';
 import CommentSection from "../Components/CommentSection.js";
 import '../styles/global.css';
+import '../styles/storyTemplate.css'
 
 function importAllStories(r) {
   let files = [];
@@ -10,10 +11,9 @@ function importAllStories(r) {
 }
 
 const stories = importAllStories(require.context('../../public/test', false, /\.(pdf|docx)$/));
-// console.log(stories)
 
-function About(){
-  const [ desc, setDesc ] = useState([])
+function StoryTemplate(){
+  const [ desc, setDesc ] = useState()
 
     useEffect(()=>{
         loadDescs()
@@ -35,22 +35,27 @@ function About(){
       fetch(filename) // fetch text file
           .then((resp) => resp.text())
           .then(data => {
-              const arr = data.split(/\r?\n/);
+              // const arr = data.split(/\r?\n/);
+              const arr = data;
+              // arr.forEach((line) => {
+              //   line += "\n";
+              // })
               setDesc(arr)
           }); 
   }
     return(
         <>
             <Navbar></Navbar>
-            <div className="docSection">
+            <div class="docSection">
+              <h1 class="docTitle">{filename.slice(0, filename.length-9).replaceAll("_", " ")}</h1>
               {
-                desc
+                <div class="display-linebreak">{desc}</div>
               }
             </div>
-
+            <hr class="storyBottomBar"/>
             <CommentSection></CommentSection>
         </>
     )
 }
 
-export default About
+export default StoryTemplate

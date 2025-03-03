@@ -58,7 +58,7 @@ function CommentSection(){
             return createElement(
                 'div',
                 { className: 'comment' },
-                createElement('h1',
+                createElement('h3',
                     { className: 'simon-comment-header' },
                     msg
                 ),
@@ -67,7 +67,7 @@ function CommentSection(){
             return createElement(
                 'div',
                 { className: 'comment' },
-                createElement('h1',
+                createElement('h3',
                     { className: 'comment-header' },
                     msg
                 ),
