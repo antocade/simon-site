@@ -1,5 +1,7 @@
 import { React, createElement, useEffect, useState } from "react";
 import { db, auth } from '../index.js';
+import { GenBtn } from '../Components/Buttons.js'
+import { useForm } from "react-hook-form"
 import { 
     collection, 
     getDocs,
@@ -8,31 +10,25 @@ import {
     limit,
 } from "firebase/firestore";
 
-
-// async function createPost() {
-//     let postDate = new Date().toLocaleString();
-
-//     try {
-//         const docRef = await addDoc(collection(db, "comments"), {
-//             type: "comment",
-//             date: postDate,
-//             msg: "test"
-//         });
-//         console.log("Document written with ID: ", docRef.id);
-//     } catch (e) {
-//         console.error("Error adding document: ", e);
-//     }
-// }
-
-
 function CommentSection(){
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm()
+
     const [ data, setData ] = useState([]);
     const [ isLoading, setLoading ] = useState(true)
-    console.log("TEST: " + window.location.hash.substring(1))
+    const filename = window.location.hash.substring(1)
+
+    const onSubmit = (msg) => {
+        createPost(msg.comment)
+    }
 
     const getAllComments = async () => {
         const commQuery = query(
-            collection(db, 'CommentSections/test/comments'),
+            collection(db, "CommentSections/" + filename + "/comments"),
             limit(10)
         );
         
@@ -50,6 +46,21 @@ function CommentSection(){
             setData(allComments)
             setLoading(false)
         });
+    }
+
+    async function createPost(msg) {
+        let postDate = new Date().toLocaleString();
+    
+        try {
+            const docRef = await addDoc(collection(db, "CommentSections/" + filename + "/comments"), {
+                type: "comment",
+                date: postDate,
+                msg: msg
+            });
+            console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
     }
 
     const Comment = ({ data }) => {
@@ -87,6 +98,11 @@ function CommentSection(){
         <>
             <div className="commentSection">
                 <h1>Comments</h1>
+                {/* Should be input field and a btn appears after clicking into it, but disabled until text written */}
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <input defaultValue="" {...register("comment")}/>
+                    <GenBtn type="submit">Comment</GenBtn>
+                </form>
                 <MapComments/> 
             </div>
         </>
