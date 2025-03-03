@@ -9,6 +9,7 @@ import {
     query,
     limit,
 } from "firebase/firestore";
+import "../styles/commentSection.css"
 
 function CommentSection(){
     const {
@@ -29,7 +30,7 @@ function CommentSection(){
     const getAllComments = async () => {
         const commQuery = query(
             collection(db, "CommentSections/" + filename + "/comments"),
-            limit(10)
+            // limit(10)
         );
         
         const querySnapshot = await getDocs(commQuery);
@@ -68,20 +69,28 @@ function CommentSection(){
         if (data.type == "simon") {
             return createElement(
                 'div',
-                { className: 'comment' },
-                createElement('h3',
-                    { className: 'simon-comment-header' },
-                    msg
+                { className: 'card pika animated' },
+                createElement('h2',
+                    { className: 'comment-header' },
+                    "Name"
                 ),
+                createElement('p',
+                    { className: 'comment-content' },
+                    msg
+                )
             );
         } else {
             return createElement(
                 'div',
                 { className: 'comment' },
-                createElement('h3',
+                createElement('h2',
                     { className: 'comment-header' },
-                    msg
+                    "Name"
                 ),
+                createElement('p',
+                    { className: 'coment-content' },
+                    msg
+                )
             );
         }
     }
@@ -96,7 +105,7 @@ function CommentSection(){
 
     return (
         <>
-            <div className="commentSection">
+            <div class="commentSection">
                 <h1>Comments</h1>
                 {/* Should be input field and a btn appears after clicking into it, but disabled until text written */}
                 <form onSubmit={handleSubmit(onSubmit)}>
