@@ -1,6 +1,5 @@
 import { React, createElement, useEffect, useState } from "react";
 import { db, auth } from '../index.js';
-import { GenBtn } from "../Components/Buttons.js";
 import { 
     collection, 
     getDocs,
@@ -85,10 +84,12 @@ function CommentSection(){
     const MapComments = () => isLoading ? <div>Loading...</div> : data.map(e => <Comment data={e} />)
 
     return (
-        <div className="commentSection">
-            <h1>Comments</h1>
-            <MapComments/> 
-        </div>
+        <>
+            <div className="commentSection">
+                <h1>Comments</h1>
+                <MapComments/> 
+            </div>
+        </>
     )
 }
 

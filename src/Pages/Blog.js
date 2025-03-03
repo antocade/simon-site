@@ -30,7 +30,6 @@ stories.forEach((name) => {
     i++;
 })
 
-var loadedFiles = false;
 var namedFileList = new Map();
 
 function Blog(){
@@ -44,6 +43,10 @@ function Blog(){
     const [ activeTab, setActiveTab ] = useState(0);
     const [ desc, setDesc ] = useState([])
     const [ page, setPage ] = useState()
+
+    useEffect(()=>{
+        loadDescs()
+    }, []);
     
     const selectTab = (e) => {
         const tabIndex = parseInt(e.target.id);
@@ -57,16 +60,10 @@ function Blog(){
         return <Navigate to={"/StoryTemplate#" + page} />
     }
 
-    if (!loadedFiles) {
-        loadDescs()
-    }
-
     function loadDescs() {
         stories.forEach((storyName) => {
             getFileContents(storyName)
         });
-    
-        loadedFiles = true;
     }
     
     function getFileContents(file) {
@@ -153,42 +150,13 @@ function Blog(){
                     <Tab onClick={selectTab} activeTab={activeTab === 2} id={2}>Most Commented</Tab>
                     <TabR onClick={selectTab} activeTab={activeTab === 3} id={3}>Least Commented</TabR>
                 </TabContainer>
-            
-                {/* <div>
-                    {searchElement ? (
-                    <>
-                        input: {searchElement}
-                    </>
-                    ) : (
-                    ""
-                    )}
-                </div> */}
+
                 <div class="grid">   
                     {
                         visibleTiles.map(e => <Tile story={e} file={namedFileList.get(e)}/>)
                     }
                 </div>
             </div>
-
-            {/* <h1>DB Test</h1>
-            <p>View in console, check posts on Firebase</p>
-            <div>
-                <GenBtn onClick={getAllPosts}>List Posts</GenBtn>
-            </div>
-            <div>
-                <GenBtn theme="red" onClick={createPost}>Create Post</GenBtn>
-            </div>
-            <div>
-            <form onSubmit={handleSubmit(signIn)}>
-            <input defaultValue="" {...register("email", { required: true})} />
-
-            <input {...register("password", { required: true })} />
-            {errors.email && <span>This field is required</span>}
-            {errors.password && <span>This field is required</span>}
-
-            <input type="submit" />
-            </form>
-            </div> */}
         </>
     )
 }
