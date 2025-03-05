@@ -13,7 +13,6 @@ import {
     query,
     limit,
 } from "firebase/firestore";
-import { signInWithEmailAndPassword } from "firebase/auth";
 
 // -- Import pdfs -- //
 function importAllStories(r) {

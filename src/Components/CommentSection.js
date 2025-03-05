@@ -12,7 +12,9 @@ import {
     limit,
     orderBy,
 } from "firebase/firestore";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import "../styles/commentSection.css"
+import User from '../Components/SessionInfo.js'
 
 function CommentSectionTemplate(){
     const {
@@ -21,45 +23,80 @@ function CommentSectionTemplate(){
         watch,
         formState: { errors },
     } = useForm()
+    
+    var userId = User.getID();
+    // var userId = null
 
     const [ data, setData ] = useState([]);
     const [ isLoading, setLoading ] = useState(true)
     const filename = window.location.hash.substring(1)
 
-    const DefaultComponent = () => {
-        const data =[
+    //TODO
+    // - get cdata as array of fetched comments
+    // - create comment creates in proper format
+    // -> get name/userId from session
+    // -> comId is the auto gen id
+    // -> 
+    // - logout
+
+    const LogInComponent = () => {
+        const cdata = [
           {
-            userId: '02b',
-            comId: '017',
-            fullName: 'Lily',
-            // userProfile: 'https://www.linkedin.com/in/riya-negi-8879631a9/',
-            text: 'I think you have a point🤔',
+            userId: '01a',
+            comId: '012',
+            fullName: 'Riya Negi',
+            avatarUrl: 'https://ui-avatars.com/api/name=Riya&background=random',
+            userProfile: 'https://www.linkedin.com/in/riya-negi-8879631a9/',
+            text: 'Hey, Loved your blog! ',
             timestamp: "2024-09-28T10:34:56Z",
-            avatarUrl: 'https://ui-avatars.com/api/name=Lily&background=random',
-            replies: []
+            replies: [
+            {
+                userId: '02a',
+                comId: '013',
+                userProfile: 'https://www.linkedin.com/in/riya-negi-8879631a9/',
+                fullName: 'Adam Scott',
+                avatarUrl: 'https://ui-avatars.com/api/name=Adam&background=random',
+                text: 'Thanks! It took me 1 month to finish this ',
+                timestamp: "2024-09-28T10:34:56Z",
+            }
+            ]
           }
         ]
         return <CommentSection
-        currentUser={{
-          currentUserId: '01a',
-          currentUserImg:
-            'https://ui-avatars.com/api/name=Riya&background=random',
-          currentUserProfile:
-            'https://www.linkedin.com/in/riya-negi-8879631a9/',
-          currentUserFullName: 'Riya Negi'
-        }}
-        logIn={{
-          onLogin: ()=>alert("Call login function"),
-          signupLink: 'http://localhost:3001/'
-        }}
-        commentData={data}
-        placeholder={"Write a comment..."}
-        onSubmitAction={(data) => console.log('check submit, ', data)}
-        currentData={(data) => {
-          console.log('current data', data)
-        }}
-      />
-    }
+              currentUser={userId ? {
+                currentUserId: userId,
+                currentUserImg:
+                  'https://ui-avatars.com/api/name=Riya&background=random',
+                currentUserProfile:
+                  'https://www.linkedin.com/in/riya-negi-8879631a9/',
+                currentUserFullName: 'Riya Negi'
+              }:null}
+              commentData={cdata}
+              logIn={{
+                onLogin: () => {
+                    // const signIn = (data) => {
+                        // console.log(data)
+                        let email = "ajb.personal@hotmail.com"
+                        let pass = "fartballs"
+
+                        signInWithEmailAndPassword(auth, email, pass)
+                            .then((userCredential) => {
+                                User.setID(userCredential.user)
+                                // const user = userCredential.user;
+                                console.log("Logged in!");
+                                console.log(userCredential.user)
+                            })
+                            .catch((error) => {
+                                const errorCode = error.code;
+                                const errorMessage = error.message;
+                                console.log(errorCode, ": ", errorMessage);
+                            })
+                    // }
+                },
+                signupLink: 'http://localhost:3001/'
+              }}
+            />
+      }
 
     const onSubmit = (msg) => {
         createPost(msg.comment)
@@ -139,7 +176,7 @@ function CommentSectionTemplate(){
         }
       });
 
-    const MapComments = () => isLoading ? <div>Loading...</div> : data.map(e => <Comment data={e} />)
+    // const MapComments = () => isLoading ? <div>Loading...</div> : data.map(e => <Comment data={e} />)
 
     return (
         <>
@@ -150,9 +187,9 @@ function CommentSectionTemplate(){
                     <input defaultValue="" {...register("comment")}/>
                     <GenBtn type="submit">Comment</GenBtn>
                 </form>
-                <MapComments/> 
+                {/* <MapComments/>  */}
             </div>
-            <DefaultComponent/>
+            <LogInComponent/>
         </>
     )
 }
