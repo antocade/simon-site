@@ -1,17 +1,20 @@
-import { React, createElement, useEffect, useState } from "react";
+import { React, createElement, useEffect, useState, cloneElement } from "react";
 import { db, auth } from '../index.js';
 import { GenBtn } from '../Components/Buttons.js'
 import { useForm } from "react-hook-form"
+import { CommentSection } from "react-comments-section";
+import "react-comments-section/dist/index.css"
 import { 
     collection, 
     getDocs,
     addDoc,
     query,
     limit,
+    orderBy,
 } from "firebase/firestore";
 import "../styles/commentSection.css"
 
-function CommentSection(){
+function CommentSectionTemplate(){
     const {
         register,
         handleSubmit,
@@ -23,6 +26,41 @@ function CommentSection(){
     const [ isLoading, setLoading ] = useState(true)
     const filename = window.location.hash.substring(1)
 
+    const DefaultComponent = () => {
+        const data =[
+          {
+            userId: '02b',
+            comId: '017',
+            fullName: 'Lily',
+            // userProfile: 'https://www.linkedin.com/in/riya-negi-8879631a9/',
+            text: 'I think you have a point🤔',
+            timestamp: "2024-09-28T10:34:56Z",
+            avatarUrl: 'https://ui-avatars.com/api/name=Lily&background=random',
+            replies: []
+          }
+        ]
+        return <CommentSection
+        currentUser={{
+          currentUserId: '01a',
+          currentUserImg:
+            'https://ui-avatars.com/api/name=Riya&background=random',
+          currentUserProfile:
+            'https://www.linkedin.com/in/riya-negi-8879631a9/',
+          currentUserFullName: 'Riya Negi'
+        }}
+        logIn={{
+          onLogin: ()=>alert("Call login function"),
+          signupLink: 'http://localhost:3001/'
+        }}
+        commentData={data}
+        placeholder={"Write a comment..."}
+        onSubmitAction={(data) => console.log('check submit, ', data)}
+        currentData={(data) => {
+          console.log('current data', data)
+        }}
+      />
+    }
+
     const onSubmit = (msg) => {
         createPost(msg.comment)
     }
@@ -30,7 +68,7 @@ function CommentSection(){
     const getAllComments = async () => {
         const commQuery = query(
             collection(db, "CommentSections/" + filename + "/comments"),
-            // limit(10)
+            orderBy("date"),
         );
         
         const querySnapshot = await getDocs(commQuery);
@@ -43,10 +81,10 @@ function CommentSection(){
                 ...data,
                 id: comment.id,
             });
-            
-            setData(allComments)
-            setLoading(false)
+             
+            setData(allComments)            
         });
+        setLoading(false)
     }
 
     async function createPost(msg) {
@@ -55,7 +93,7 @@ function CommentSection(){
         try {
             const docRef = await addDoc(collection(db, "CommentSections/" + filename + "/comments"), {
                 type: "comment",
-                date: postDate,
+                date: postDate, //replace with timestamp
                 msg: msg
             });
             console.log("Document written with ID: ", docRef.id);
@@ -69,7 +107,7 @@ function CommentSection(){
         if (data.type == "simon") {
             return createElement(
                 'div',
-                { className: 'card pika animated' },
+                { className: 'card pika animated', id: data.id },
                 createElement('h2',
                     { className: 'comment-header' },
                     "Name"
@@ -82,7 +120,7 @@ function CommentSection(){
         } else {
             return createElement(
                 'div',
-                { className: 'comment' },
+                { className: 'comment', id: data.id },
                 createElement('h2',
                     { className: 'comment-header' },
                     "Name"
@@ -114,8 +152,9 @@ function CommentSection(){
                 </form>
                 <MapComments/> 
             </div>
+            <DefaultComponent/>
         </>
     )
 }
 
-export default CommentSection
+export default CommentSectionTemplate

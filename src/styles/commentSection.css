@@ -41,7 +41,7 @@
     border-radius: 5px;
     will-change: transform, filter;
     
-    background-color: lightgray;
+    background-color: rgb(240, 240, 240);
     background-image: var(--front);
     background-size: cover;
     background-repeat: no-repeat;
