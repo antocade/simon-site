@@ -1,27 +1,36 @@
 var User = (() => {
-    var ID = "";
-  
     var getID = function() {
-        let cookie = "";
-        cookie = document.cookie.split(';')
-        console.log("DEBUG: " + cookie)
-        if (cookie) {
-            return cookie;
-        } else {
+        let ID = "";
+        let cookie = document.cookie.split(';')
+
+        // console.log("DEBUG: " + cookie)
+        cookie.forEach((field) => {
+          if (field.includes("user_id")) {
+            ID = field.slice(8);
+            }
+        })
+
+        if (ID != "") {
             return ID;
+        } else {
+          return null;
         }
-    // Or pull this from cookie/localStorage
     };
   
-    var setID = function(inp) {
-      ID = inp;     
+    var setID = function(ID) { 
       // Also set this in cookie/localStorage
-      document.cookie = `user_id=${ID};max-age=604800;domain=antocade.github.io/simon-site`
+      // document.cookie = `user_id=${ID};max-age=60480;domain=antocade.github.io/simon-site`
+      document.cookie = "user_id=" + encodeURIComponent(ID) + ";max-age=60480"
     };
+
+    var clearCookies = function(ID) {
+      document.cookie = "user_id=" + encodeURIComponent(ID) + ";max-age=0"
+    }
   
     return {
       getID: getID,
-      setID: setID
+      setID: setID,
+      clearCookies: clearCookies
     }
   
   })();

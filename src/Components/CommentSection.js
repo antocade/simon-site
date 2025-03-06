@@ -81,10 +81,10 @@ function CommentSectionTemplate(){
 
                         signInWithEmailAndPassword(auth, email, pass)
                             .then((userCredential) => {
-                                User.setID(userCredential.user)
+                                User.setID(userCredential.user.uid)
                                 // const user = userCredential.user;
                                 console.log("Logged in!");
-                                console.log(userCredential.user)
+                                console.log(userCredential.user.uid) //can get more info from user
                             })
                             .catch((error) => {
                                 const errorCode = error.code;
@@ -170,9 +170,13 @@ function CommentSectionTemplate(){
         }
     }
 
+    const logout = () => {
+        User.clearCookies()
+    }
+
     useEffect(() => {
         if (isLoading) {
-            getAllComments();
+            getAllComments(User.getID());
         }
       });
 
@@ -189,6 +193,7 @@ function CommentSectionTemplate(){
                 </form>
                 {/* <MapComments/>  */}
             </div>
+            <GenBtn onClick={logout}>Clear Cookies</GenBtn>
             <LogInComponent/>
         </>
     )
