@@ -24,11 +24,11 @@ function CommentSectionTemplate(){
         formState: { errors },
     } = useForm()
     
-    var userId = User.getID();
     // var userId = null
 
     const [ data, setData ] = useState([]);
     const [ isLoading, setLoading ] = useState(true)
+    const [ userId, setUserId ] = useState()
     const filename = window.location.hash.substring(1)
 
     //TODO
@@ -82,6 +82,7 @@ function CommentSectionTemplate(){
                         signInWithEmailAndPassword(auth, email, pass)
                             .then((userCredential) => {
                                 User.setID(userCredential.user.uid)
+                                setUserId(userCredential.user.uid)
                                 // const user = userCredential.user;
                                 console.log("Logged in!");
                                 console.log(userCredential.user.uid) //can get more info from user
@@ -172,11 +173,13 @@ function CommentSectionTemplate(){
 
     const logout = () => {
         User.clearCookies()
+        setUserId(null)
     }
 
     useEffect(() => {
         if (isLoading) {
             getAllComments(User.getID());
+            setUserId(User.getID());
         }
       });
 
