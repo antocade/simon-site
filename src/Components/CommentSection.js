@@ -33,69 +33,48 @@ function CommentSectionTemplate(){
     const filename = window.location.hash.substring(1)
 
     //TODO
-    // - get cdata as array of fetched comments
-    // - create comment creates in proper format
-    // -> get name/userId from session
-    // -> comId is the auto gen id
-    // -> 
-    // - logout
+    // - create comment on reply/post
+    // get name/userId from session
+    // move logout btn/add login btn when logged out in place of
 
     const LogInComponent = () => {
         var cdata = []
-        //if type reply skip over
-        //will be added as reply to main comment
         data.forEach((comment) => {
-            var temp = {
-                userId: 'blank',
-                comId: 'bank',
-                fullName: 'blank',
-                avatarUrl: 'https://ui-avatars.com/api/name=Riya&background=random',
-                text: comment.msg,
-                timestamp: comment.date,
-                replies: []
-            }
+            if (comment.type != "reply") {
+                var temp = {
+                    userId: 'blank',
+                    comId: comment.id,
+                    fullName: comment.name,
+                    avatarUrl: `https://ui-avatars.com/api/name=${comment.name}&background=random`,
+                    text: comment.msg,
+                    timestamp: comment.date, //fix, make timestamp
+                    replies: []
+                }
 
-            // //track stuff you found in replies and don't try and read later?
-            // comment.replies.forEach(async (reply) => {
-            //     // const newQuery = query(
-            //     const docRef = doc(db, "CommentSections/" + filename + "/comments/" + reply)
-            //     // );
-            //     const fsDoc = await getDocs(docRef);
-            //     var reply = {
-            //         userId: 'blank',
-            //         comId: 'bank',
-            //         fullName: 'blank',
-            //         avatarUrl: 'https://ui-avatars.com/api/name=Riya&background=random',
-            //         text: fsDoc.msg,
-            //         timestamp: fsDoc.date,
-            //     }
-            //     temp.replies.push(reply)
-            // })
-            cdata.push(temp)
+                if (comment.replies[0] != "") {
+                    comment.replies.forEach(async (reply) => {
+                        //this should just try and fetch document off id but the firestore docs are annoying
+                        data.forEach((entry) => {
+                            if (entry.id == reply) {
+                                console.log("REPLY GOT: " + reply)
+                                var replyObj = {
+                                    userId: 'blank',
+                                    comId: entry.id,
+                                    fullName: entry.name,
+                                    avatarUrl: `https://ui-avatars.com/api/name=${comment.name}&background=random`,
+                                    text: entry.msg,
+                                    timestamp: entry.date,
+                                }
+                                temp.replies.push(replyObj)
+                            }
+                        })
+                    })
+                }
+                cdata.push(temp)
+            }
+            
         })
-        // const bdata = data.map({comId={data.msg}})
-        // const cdata = [
-        //   {
-        //     userId: '01a',
-        //     comId: '012',
-        //     fullName: 'Riya Negi',
-        //     avatarUrl: 'https://ui-avatars.com/api/name=Riya&background=random',
-        //     // userProfile: 'https://www.linkedin.com/in/riya-negi-8879631a9/',
-        //     text: 'Hey, Loved your blog! ',
-        //     timestamp: "2024-09-28T10:34:56Z",
-        //     replies: [
-        //     {
-        //         userId: '02a',
-        //         comId: '013',
-        //         // userProfile: 'https://www.linkedin.com/in/riya-negi-8879631a9/',
-        //         fullName: 'Adam Scott',
-        //         avatarUrl: 'https://ui-avatars.com/api/name=Adam&background=random',
-        //         text: 'Thanks! It took me 1 month to finish this ',
-        //         timestamp: "2024-09-28T10:34:56Z",
-        //     }
-        //     ]
-        //   }
-        // ]
+
         return <CommentSection
               currentUser={userId ? {
                 currentUserId: userId,
@@ -212,7 +191,7 @@ function CommentSectionTemplate(){
 
     useEffect(() => {
         if (isLoading) {
-            getAllComments(User.getID());
+            getAllComments();
             setUserId(User.getID());
         }
       });
