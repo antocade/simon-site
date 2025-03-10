@@ -6,6 +6,7 @@ import { CommentSection } from "react-comments-section";
 import "react-comments-section/dist/index.css"
 import { 
     collection, 
+    doc,
     getDocs,
     addDoc,
     query,
@@ -40,28 +41,61 @@ function CommentSectionTemplate(){
     // - logout
 
     const LogInComponent = () => {
-        const cdata = [
-          {
-            userId: '01a',
-            comId: '012',
-            fullName: 'Riya Negi',
-            avatarUrl: 'https://ui-avatars.com/api/name=Riya&background=random',
-            userProfile: 'https://www.linkedin.com/in/riya-negi-8879631a9/',
-            text: 'Hey, Loved your blog! ',
-            timestamp: "2024-09-28T10:34:56Z",
-            replies: [
-            {
-                userId: '02a',
-                comId: '013',
-                userProfile: 'https://www.linkedin.com/in/riya-negi-8879631a9/',
-                fullName: 'Adam Scott',
-                avatarUrl: 'https://ui-avatars.com/api/name=Adam&background=random',
-                text: 'Thanks! It took me 1 month to finish this ',
-                timestamp: "2024-09-28T10:34:56Z",
+        var cdata = []
+        //if type reply skip over
+        //will be added as reply to main comment
+        data.forEach((comment) => {
+            var temp = {
+                userId: 'blank',
+                comId: 'bank',
+                fullName: 'blank',
+                avatarUrl: 'https://ui-avatars.com/api/name=Riya&background=random',
+                text: comment.msg,
+                timestamp: comment.date,
+                replies: []
             }
-            ]
-          }
-        ]
+
+            // //track stuff you found in replies and don't try and read later?
+            // comment.replies.forEach(async (reply) => {
+            //     // const newQuery = query(
+            //     const docRef = doc(db, "CommentSections/" + filename + "/comments/" + reply)
+            //     // );
+            //     const fsDoc = await getDocs(docRef);
+            //     var reply = {
+            //         userId: 'blank',
+            //         comId: 'bank',
+            //         fullName: 'blank',
+            //         avatarUrl: 'https://ui-avatars.com/api/name=Riya&background=random',
+            //         text: fsDoc.msg,
+            //         timestamp: fsDoc.date,
+            //     }
+            //     temp.replies.push(reply)
+            // })
+            cdata.push(temp)
+        })
+        // const bdata = data.map({comId={data.msg}})
+        // const cdata = [
+        //   {
+        //     userId: '01a',
+        //     comId: '012',
+        //     fullName: 'Riya Negi',
+        //     avatarUrl: 'https://ui-avatars.com/api/name=Riya&background=random',
+        //     // userProfile: 'https://www.linkedin.com/in/riya-negi-8879631a9/',
+        //     text: 'Hey, Loved your blog! ',
+        //     timestamp: "2024-09-28T10:34:56Z",
+        //     replies: [
+        //     {
+        //         userId: '02a',
+        //         comId: '013',
+        //         // userProfile: 'https://www.linkedin.com/in/riya-negi-8879631a9/',
+        //         fullName: 'Adam Scott',
+        //         avatarUrl: 'https://ui-avatars.com/api/name=Adam&background=random',
+        //         text: 'Thanks! It took me 1 month to finish this ',
+        //         timestamp: "2024-09-28T10:34:56Z",
+        //     }
+        //     ]
+        //   }
+        // ]
         return <CommentSection
               currentUser={userId ? {
                 currentUserId: userId,
