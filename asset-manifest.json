@@ -1,16 +1,17 @@
 {
   "files": {
-    "main.css": "/simon-site/static/css/main.dd14200f.css",
-    "main.js": "/simon-site/static/js/main.10d70026.js",
+    "main.css": "/simon-site/static/css/main.efcf548a.css",
+    "main.js": "/simon-site/static/js/main.fcf44d16.js",
     "index.html": "/simon-site/index.html",
+    "static/media/exampleWordDoc1_02-25-25 copy.docx": "/simon-site/static/media/exampleWordDoc1_02-25-25 copy.33077e5875beb52212bf.docx",
     "static/media/exampleWordDoc1_02-25-25.docx": "/simon-site/static/media/exampleWordDoc1_02-25-25.33077e5875beb52212bf.docx",
     "static/media/Test_Title_Doc_03-01-25.docx": "/simon-site/static/media/Test_Title_Doc_03-01-25.b0a2c0f8a8d4462dcd76.docx",
     "static/media/exampleWordDoc2_01-25-25.docx": "/simon-site/static/media/exampleWordDoc2_01-25-25.db346d691d7acc4dc262.docx",
-    "main.dd14200f.css.map": "/simon-site/static/css/main.dd14200f.css.map",
-    "main.10d70026.js.map": "/simon-site/static/js/main.10d70026.js.map"
+    "main.efcf548a.css.map": "/simon-site/static/css/main.efcf548a.css.map",
+    "main.fcf44d16.js.map": "/simon-site/static/js/main.fcf44d16.js.map"
   },
   "entrypoints": [
-    "static/css/main.dd14200f.css",
-    "static/js/main.10d70026.js"
+    "static/css/main.efcf548a.css",
+    "static/js/main.fcf44d16.js"
   ]
 }
