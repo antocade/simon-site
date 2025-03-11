@@ -19,13 +19,6 @@ import User from '../Components/SessionInfo.js'
 import pfp from '../pfp.JPG'
 
 function CommentSectionTemplate(){
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: { errors },
-    } = useForm()
-    
     // var userId = null
 
     const [ data, setData ] = useState([]);
@@ -35,7 +28,6 @@ function CommentSectionTemplate(){
     const filename = window.location.hash.substring(1)
 
     //TODO
-    // - Specify simon type comments styling
     // - create comment on reply/post
     // get name/userId from session
     // move logout btn/add login btn when logged out in place of
@@ -167,37 +159,6 @@ function CommentSectionTemplate(){
         }
     }
 
-    const Comment = ({ data }) => {
-        const msg = data.msg
-        if (data.type == "simon") {
-            return createElement(
-                'div',
-                { className: 'card pika animated', id: data.id },
-                createElement('h2',
-                    { className: 'comment-header' },
-                    "Name"
-                ),
-                createElement('p',
-                    { className: 'comment-content' },
-                    msg
-                )
-            );
-        } else {
-            return createElement(
-                'div',
-                { className: 'comment', id: data.id },
-                createElement('h2',
-                    { className: 'comment-header' },
-                    "Name"
-                ),
-                createElement('p',
-                    { className: 'coment-content' },
-                    msg
-                )
-            );
-        }
-    }
-
     const logout = () => {
         User.clearCookies()
         setUserId(null)
@@ -212,7 +173,6 @@ function CommentSectionTemplate(){
         if (specComments) {
             setTimeout(() => {
                 const elements = document.querySelectorAll("div.fullName")
-                console.log(elements)
                 elements.forEach((el) => {
                     console.log(el.innerText)
                     if (el.innerText.includes("Simon\n")) {
@@ -222,28 +182,7 @@ function CommentSectionTemplate(){
             }, 1000)
             
         }
-        // const elements = document.querySelectorAll("div.fullName")
-        // if (elements.length > 0 && specComments) {
-        //     console.log(elements)
-        //     setSpecRun(false)
-        // }
-        // if (!isLoading && specComments) {
-        //     console.log("TEST")
-        //     const elements = document.querySelectorAll("div.fullName")
-        //     console.log(elements)
-        //     elements.forEach((el) => {
-        //         if (el.innerHTML == "Simon") {
-        //             el.className += " test"
-        //             console.log("TEST")
-        //         }
-        //     })
-        //     setSpecRun(false)
-        // }
       });
-
-      
-
-    // const MapComments = () => isLoading ? <div>Loading...</div> : data.map(e => <Comment data={e} />)
 
     return (
         <>
