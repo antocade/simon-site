@@ -12,11 +12,22 @@ code {
     monospace;
 }
 
+.main-container{
+  display: block;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  justify-content: space-evenly;
+  width: 100%;
+}
+
 .tile {
   display: inline-block; 
-  width: 100%; 
-  max-width: 34vw; 
-  overflow: hidden; 
+  width: 300px;
   text-align: center; 
 }
 
