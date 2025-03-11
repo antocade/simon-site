@@ -107,22 +107,6 @@ function Blog(){
             )
         );
     }
-    // const signIn = (data) => {
-    //     console.log(data)
-    //     let email = data.email;
-    //     let pass = data.password;
-
-    //     signInWithEmailAndPassword(auth, email, pass)
-    //         .then((userCredential) => {
-    //             const user = userCredential.user;
-    //             console.log("Logged in!");
-    //         })
-    //         .catch((error) => {
-    //             const errorCode = error.code;
-    //             const errorMessage = error.message;
-    //             console.log(errorCode, ": ", errorMessage);
-    //         })
-    // }
 
     //Live searchbar
     const searchElement = watch("toSearch");

@@ -16,6 +16,7 @@ import {
 import { signInWithEmailAndPassword } from "firebase/auth";
 import "../styles/commentSection.css"
 import User from '../Components/SessionInfo.js'
+import pfp from '../pfp.JPG'
 
 function CommentSectionTemplate(){
     const {
@@ -30,9 +31,11 @@ function CommentSectionTemplate(){
     const [ data, setData ] = useState([]);
     const [ isLoading, setLoading ] = useState(true)
     const [ userId, setUserId ] = useState()
+    const [ specComments, setSpecComments ] = useState(false)
     const filename = window.location.hash.substring(1)
 
     //TODO
+    // - Specify simon type comments styling
     // - create comment on reply/post
     // get name/userId from session
     // move logout btn/add login btn when logged out in place of
@@ -41,29 +44,41 @@ function CommentSectionTemplate(){
         var cdata = []
         data.forEach((comment) => {
             if (comment.type != "reply") {
-                var temp = {
-                    userId: 'blank',
-                    comId: comment.id,
-                    fullName: comment.name,
-                    avatarUrl: `https://ui-avatars.com/api/name=${comment.name}&background=random`,
-                    text: comment.msg,
-                    timestamp: comment.date, //fix, make timestamp
-                    replies: []
+                if (comment.type == "simon") {
+                    var temp = {
+                        userId: 'blank',
+                        comId: comment.id,
+                        fullName: comment.name,
+                        avatarUrl: pfp,
+                        text: comment.msg,
+                        timestamp: comment.date, //fix, make timestamp
+                        replies: [],
+                    }
+                } else {
+                    var temp = {
+                        userId: 'blank',
+                        comId: comment.id,
+                        fullName: comment.name,
+                        avatarUrl: `https://ui-avatars.com/api/name=${comment.name}&background=random`,
+                        text: comment.msg,
+                        timestamp: comment.date, //fix, make timestamp
+                        replies: [],
+                    }
                 }
+                //if uid is simon's set picture to his
 
                 if (comment.replies[0] != "") {
                     comment.replies.forEach(async (reply) => {
                         //this should just try and fetch document off id but the firestore docs are annoying
                         data.forEach((entry) => {
                             if (entry.id == reply) {
-                                console.log("REPLY GOT: " + reply)
                                 var replyObj = {
                                     userId: 'blank',
                                     comId: entry.id,
                                     fullName: entry.name,
-                                    avatarUrl: `https://ui-avatars.com/api/name=${comment.name}&background=random`,
+                                    avatarUrl: `https://ui-avatars.com/api/name=${entry.name}&background=random`,
                                     text: entry.msg,
-                                    timestamp: entry.date,
+                                    timestamp: entry.date
                                 }
                                 temp.replies.push(replyObj)
                             }
@@ -76,44 +91,42 @@ function CommentSectionTemplate(){
         })
 
         return <CommentSection
-              currentUser={userId ? {
-                currentUserId: userId,
-                currentUserImg:
-                  'https://ui-avatars.com/api/name=Riya&background=random',
-                currentUserProfile:
-                  'https://www.linkedin.com/in/riya-negi-8879631a9/',
-                currentUserFullName: 'Riya Negi'
-              }:null}
-              commentData={cdata}
-              logIn={{
-                onLogin: () => {
-                    // const signIn = (data) => {
-                        // console.log(data)
-                        let email = "ajb.personal@hotmail.com"
-                        let pass = "fartballs"
+        //switch currentUser info over to session stuff
+            currentUser={userId ? {
+            currentUserId: userId,
+            currentUserImg:
+                'https://ui-avatars.com/api/name=Riya&background=random',
+            currentUserProfile:
+                'https://www.linkedin.com/in/riya-negi-8879631a9/',
+            currentUserFullName: 'Riya Negi'
+            }:null}
 
-                        signInWithEmailAndPassword(auth, email, pass)
-                            .then((userCredential) => {
-                                User.setID(userCredential.user.uid)
-                                setUserId(userCredential.user.uid)
-                                // const user = userCredential.user;
-                                console.log("Logged in!");
-                                console.log(userCredential.user.uid) //can get more info from user
-                            })
-                            .catch((error) => {
-                                const errorCode = error.code;
-                                const errorMessage = error.message;
-                                console.log(errorCode, ": ", errorMessage);
-                            })
-                    // }
-                },
-                signupLink: 'http://localhost:3001/'
-              }}
-            />
-      }
+            commentData={cdata}
+            logIn={{
+            onLogin: () => {
+                // const signIn = (data) => {
+                    // console.log(data)
+                    let email = "ajb.personal@hotmail.com"
+                    let pass = "fartballs"
 
-    const onSubmit = (msg) => {
-        createPost(msg.comment)
+                    signInWithEmailAndPassword(auth, email, pass)
+                        .then((userCredential) => {
+                            User.setID(userCredential.user.uid)
+                            setUserId(userCredential.user.uid)
+                            // const user = userCredential.user;
+                            console.log("Logged in!");
+                            console.log(userCredential.user.uid) //can get more info from user
+                        })
+                        .catch((error) => {
+                            const errorCode = error.code;
+                            const errorMessage = error.message;
+                            console.log(errorCode, ": ", errorMessage);
+                        })
+                // }
+            },
+            signupLink: 'http://localhost:3001/'
+            }}
+        />
     }
 
     const getAllComments = async () => {
@@ -136,6 +149,7 @@ function CommentSectionTemplate(){
             setData(allComments)            
         });
         setLoading(false)
+        setSpecComments(true)
     }
 
     async function createPost(msg) {
@@ -194,21 +208,45 @@ function CommentSectionTemplate(){
             getAllComments();
             setUserId(User.getID());
         }
+
+        if (specComments) {
+            setTimeout(() => {
+                const elements = document.querySelectorAll("div.fullName")
+                console.log(elements)
+                elements.forEach((el) => {
+                    console.log(el.innerText)
+                    if (el.innerText.includes("Simon\n")) {
+                        el.className += " card pika animated";
+                    }
+                })
+            }, 1000)
+            
+        }
+        // const elements = document.querySelectorAll("div.fullName")
+        // if (elements.length > 0 && specComments) {
+        //     console.log(elements)
+        //     setSpecRun(false)
+        // }
+        // if (!isLoading && specComments) {
+        //     console.log("TEST")
+        //     const elements = document.querySelectorAll("div.fullName")
+        //     console.log(elements)
+        //     elements.forEach((el) => {
+        //         if (el.innerHTML == "Simon") {
+        //             el.className += " test"
+        //             console.log("TEST")
+        //         }
+        //     })
+        //     setSpecRun(false)
+        // }
       });
+
+      
 
     // const MapComments = () => isLoading ? <div>Loading...</div> : data.map(e => <Comment data={e} />)
 
     return (
         <>
-            <div class="commentSection">
-                <h1>Comments</h1>
-                {/* Should be input field and a btn appears after clicking into it, but disabled until text written */}
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <input defaultValue="" {...register("comment")}/>
-                    <GenBtn type="submit">Comment</GenBtn>
-                </form>
-                {/* <MapComments/>  */}
-            </div>
             <GenBtn onClick={logout}>Clear Cookies</GenBtn>
             <LogInComponent/>
         </>
