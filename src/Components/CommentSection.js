@@ -121,8 +121,7 @@ function CommentSectionTemplate(){
             onReplyAction={(data) => {
                 let type = userId == 1 ? "simon_reply" : "reply"
                 let parentComment = data.repliedToCommentId
-                console.log("replydat", data)
-                
+
                 let replyID = createPost(data.text, type, 'Test Account')
                 if (replyID) {
                     addReply(parentComment, replyID)
@@ -179,9 +178,11 @@ function CommentSectionTemplate(){
     }
 
     async function addReply(parentCommID, replyCommID) {
+        let commID = await replyCommID
+
         try {
-            const docRef = await updateDoc(doc(db, "CommentSections/" + filename + "/comments/", parentCommID), {
-                replies: arrayUnion(replyCommID) // FIX
+            await updateDoc(doc(db, "CommentSections/" + filename + "/comments/", parentCommID), {
+                replies: arrayUnion(commID)
             });
             console.log("Updated document with ID: ", parentCommID)
         } catch (e) {
