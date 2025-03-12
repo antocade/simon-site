@@ -12,6 +12,8 @@ import {
     query,
     limit,
     orderBy,
+    updateDoc,
+    arrayUnion,
 } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import "../styles/commentSection.css"
@@ -57,7 +59,6 @@ function CommentSectionTemplate(){
                         replies: [],
                     }
                 }
-                //if uid is simon's set picture to his
 
                 if (comment.replies[0] != "") {
                     comment.replies.forEach(async (reply) => {
@@ -87,17 +88,13 @@ function CommentSectionTemplate(){
             currentUser={userId ? {
             currentUserId: userId,
             currentUserImg:
-                'https://ui-avatars.com/api/name=Riya&background=random',
-            currentUserProfile:
-                'https://www.linkedin.com/in/riya-negi-8879631a9/',
-            currentUserFullName: 'Riya Negi'
+                'https://ui-avatars.com/api/name=Test Account&background=random',
+            currentUserFullName: 'Test Account'
             }:null}
 
             commentData={cdata}
             logIn={{
             onLogin: () => {
-                // const signIn = (data) => {
-                    // console.log(data)
                     let email = "ajb.personal@hotmail.com"
                     let pass = "fartballs"
 
@@ -105,8 +102,7 @@ function CommentSectionTemplate(){
                         .then((userCredential) => {
                             User.setID(userCredential.user.uid)
                             setUserId(userCredential.user.uid)
-                            // const user = userCredential.user;
-                            console.log("Logged in!");
+                            // console.log("Logged in!");
                             console.log(userCredential.user.uid) //can get more info from user
                         })
                         .catch((error) => {
@@ -114,10 +110,28 @@ function CommentSectionTemplate(){
                             const errorMessage = error.message;
                             console.log(errorCode, ": ", errorMessage);
                         })
-                // }
             },
             signupLink: 'http://localhost:3001/'
             }}
+            onSubmitAction={(data) => {
+                let type = userId == 1 ? "simon" : "comment"
+                createPost(data.text, type, 'Test Account')
+            }}
+
+            onReplyAction={(data) => {
+                let type = userId == 1 ? "simon_reply" : "reply"
+                let parentComment = data.repliedToCommentId
+                console.log("replydat", data)
+                
+                let replyID = createPost(data.text, type, 'Test Account')
+                if (replyID) {
+                    addReply(parentComment, replyID)
+                }
+            }}
+            
+            // currentData={(data) => {
+            //     console.log('current data', data)
+            // }}
         />
     }
 
@@ -144,18 +158,34 @@ function CommentSectionTemplate(){
         setSpecComments(true)
     }
 
-    async function createPost(msg) {
+    async function createPost(msg, type, name) {
         let postDate = new Date().toLocaleString();
     
         try {
             const docRef = await addDoc(collection(db, "CommentSections/" + filename + "/comments"), {
-                type: "comment",
                 date: postDate, //replace with timestamp
-                msg: msg
+                msg: msg,
+                name: name,
+                replies: [],
+                type: type,
+
             });
             console.log("Document written with ID: ", docRef.id);
+            return docRef.id;
         } catch (e) {
             console.error("Error adding document: ", e);
+            return null;
+        }
+    }
+
+    async function addReply(parentCommID, replyCommID) {
+        try {
+            const docRef = await updateDoc(doc(db, "CommentSections/" + filename + "/comments/", parentCommID), {
+                replies: arrayUnion(replyCommID) // FIX
+            });
+            console.log("Updated document with ID: ", parentCommID)
+        } catch (e) {
+            console.error("Error updating document: ", e);
         }
     }
 
@@ -174,7 +204,6 @@ function CommentSectionTemplate(){
             setTimeout(() => {
                 const elements = document.querySelectorAll("div.fullName")
                 elements.forEach((el) => {
-                    console.log(el.innerText)
                     if (el.innerText.includes("Simon\n")) {
                         el.className += " card pika animated";
                     }
