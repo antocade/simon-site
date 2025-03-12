@@ -1,3 +1,7 @@
+body {
+    background-color: rgb(233, 227, 222);
+}
+
 .docSection {
     width: 95%;
     margin: auto;
