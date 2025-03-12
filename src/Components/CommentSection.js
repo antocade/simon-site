@@ -1,7 +1,6 @@
-import { React, createElement, useEffect, useState, cloneElement } from "react";
+import { React, useEffect, useState, cloneElement } from "react";
 import { db, auth } from '../index.js';
 import { GenBtn } from '../Components/Buttons.js'
-import { useForm } from "react-hook-form"
 import { CommentSection } from "react-comments-section";
 import "react-comments-section/dist/index.css"
 import { 
@@ -10,7 +9,6 @@ import {
     getDocs,
     addDoc,
     query,
-    limit,
     orderBy,
     updateDoc,
     arrayUnion,
@@ -30,7 +28,6 @@ function CommentSectionTemplate(){
     const filename = window.location.hash.substring(1)
 
     //TODO
-    // - create comment on reply/post
     // get name/userId from session
     // move logout btn/add login btn when logged out in place of
 
@@ -102,7 +99,6 @@ function CommentSectionTemplate(){
                         .then((userCredential) => {
                             User.setID(userCredential.user.uid)
                             setUserId(userCredential.user.uid)
-                            // console.log("Logged in!");
                             console.log(userCredential.user.uid) //can get more info from user
                         })
                         .catch((error) => {
@@ -127,10 +123,6 @@ function CommentSectionTemplate(){
                     addReply(parentComment, replyID)
                 }
             }}
-            
-            // currentData={(data) => {
-            //     console.log('current data', data)
-            // }}
         />
     }
 
