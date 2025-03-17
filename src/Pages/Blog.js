@@ -3,16 +3,8 @@ import { Navigate } from "react-router-dom";
 import '../styles/global.css';
 import '../styles/storyTiles.css';
 import Navbar from '../Components/Navbar';
-import { GenBtn, TabContainer, Tab, TabL, TabR } from "../Components/Buttons.js";
-import { db, auth } from '../index.js';
+import { TabContainer, Tab, TabL, TabR } from "../Components/Buttons.js";
 import { useForm } from "react-hook-form"
-import { 
-    collection, 
-    getDocs,
-    addDoc,
-    query,
-    limit,
-} from "firebase/firestore";
 
 // -- Import pdfs -- //
 function importAllStories(r) {
@@ -70,7 +62,7 @@ function Blog(){
         fetch(filename) // fetch text file
             .then((resp) => resp.text())
             .then(data => {
-                const arr = data.split(/\r?\n/);
+                const arr = data;
                 namedFileList.set(file, arr)
                 setDesc(arr)
             }); 
@@ -98,7 +90,7 @@ function Blog(){
                 slicedName
             ),
             createElement('p',
-                { className: 'tile-desc' },
+                { className: 'tile-desc display-linebreak' },
                 description
             ),
             createElement('span',
