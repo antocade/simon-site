@@ -21,7 +21,7 @@ function importAllStories(r) {
     return files;
   }
   
-const stories = importAllStories(require.context('../../public/test', false, /\.(pdf|docx)$/));
+const stories = importAllStories(require.context('../../public/story-upload', false, /\.(pdf|docx)$/));
 let i = 0
 stories.forEach((name) => {
     name = name.slice(2, (name.length - 5))
@@ -66,7 +66,7 @@ function Blog(){
     }
     
     function getFileContents(file) {
-        var filename = "./test/" + file + ".docx"
+        var filename = "./story-upload/" + file + ".docx"
         fetch(filename) // fetch text file
             .then((resp) => resp.text())
             .then(data => {

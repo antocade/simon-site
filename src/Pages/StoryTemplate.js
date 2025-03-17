@@ -10,7 +10,7 @@ function importAllStories(r) {
   return files;
 }
 
-const stories = importAllStories(require.context('../../public/test', false, /\.(pdf|docx)$/));
+const stories = importAllStories(require.context('../../public/story-upload', false, /\.(pdf|docx)$/));
 
 function StoryTemplate(){
   const [ desc, setDesc ] = useState()
@@ -31,7 +31,7 @@ function StoryTemplate(){
   }
 
   function getFileContents(file) {
-      var filename = "./test/" + file
+      var filename = "./story-upload/" + file
       fetch(filename) // fetch text file
           .then((resp) => resp.text())
           .then(data => {
