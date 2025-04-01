@@ -19,11 +19,10 @@ import User from '../Components/SessionInfo.js'
 import pfp from '../pfp.JPG'
 
 function CommentSectionTemplate(){
-    // var userId = null
-
     const [ data, setData ] = useState([]);
     const [ isLoading, setLoading ] = useState(true)
     const [ userId, setUserId ] = useState()
+    const [ userName, setUserName ] = useState()
     const [ specComments, setSpecComments ] = useState(false)
     const filename = window.location.hash.substring(1)
 
@@ -85,19 +84,21 @@ function CommentSectionTemplate(){
             currentUser={userId ? {
             currentUserId: userId,
             currentUserImg:
-                'https://ui-avatars.com/api/name=Test Account&background=random',
-            currentUserFullName: 'Test Account'
+            `https://ui-avatars.com/api/name=${userName} Account&background=random`,
+            currentUserFullName: userName
             }:null}
 
             commentData={cdata}
             logIn={{
             onLogin: () => {
-                    let email = "ajb.personal@hotmail.com"
-                    let pass = "fartballs"
+                    let email = prompt("Enter email")
+                    let pass = prompt("Enter password")
 
                     signInWithEmailAndPassword(auth, email, pass)
                         .then((userCredential) => {
                             User.setID(userCredential.user.uid)
+                            User.setName(userCredential.user.displayName)
+                            console.log("test...",userCredential.user.displayName)
                             setUserId(userCredential.user.uid)
                             console.log(userCredential.user.uid) //can get more info from user
                         })
@@ -137,7 +138,7 @@ function CommentSectionTemplate(){
         querySnapshot.forEach((comment) => {
             const data = comment.data()
             // const fullEntry = JSON.stringify(comment.data())
-            console.log(`ID: ${comment.id} | Msg: ${data.msg}`);
+            // console.log(`ID: ${comment.id} | Msg: ${data.msg}`);
             allComments.push({
                 ...data,
                 id: comment.id,
@@ -191,6 +192,8 @@ function CommentSectionTemplate(){
         if (isLoading) {
             getAllComments();
             setUserId(User.getID());
+            setUserName(User.getName());
+            console.log("name",userName)
         }
 
         if (specComments) {
