@@ -1,3 +1,7 @@
+/* EVIL BAD CODE YUCK
+so um I did not know firebase could do user sessions so don't I look like a dope huh
+all the cookies stuff will stick around for a couple more commits incase I need to use it later
+*/
 var User = (() => {
     var getID = function() {
         let ID = "";

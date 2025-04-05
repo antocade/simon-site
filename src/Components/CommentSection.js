@@ -13,9 +13,8 @@ import {
     updateDoc,
     arrayUnion,
 } from "firebase/firestore";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import "../styles/commentSection.css"
-import User from '../Components/SessionInfo.js'
 import pfp from '../pfp.JPG'
 
 function CommentSectionTemplate(){
@@ -27,7 +26,6 @@ function CommentSectionTemplate(){
     const filename = window.location.hash.substring(1)
 
     //TODO
-    // get name/userId from session
     // move logout btn/add login btn when logged out in place of
 
     const LogInComponent = () => {
@@ -80,7 +78,6 @@ function CommentSectionTemplate(){
         })
 
         return <CommentSection
-        //switch currentUser info over to session stuff
             currentUser={userId ? {
             currentUserId: userId,
             currentUserImg:
@@ -96,10 +93,7 @@ function CommentSectionTemplate(){
 
                     signInWithEmailAndPassword(auth, email, pass)
                         .then((userCredential) => {
-                            User.setID(userCredential.user.uid)
-                            User.setName(userCredential.user.displayName)
-                            console.log("test...",userCredential.user.displayName)
-                            setUserId(userCredential.user.uid)
+                            console.log("test...",userCredential.user.displayName)//
                             console.log(userCredential.user.uid) //can get more info from user
                         })
                         .catch((error) => {
@@ -184,16 +178,20 @@ function CommentSectionTemplate(){
     }
 
     const logout = () => {
-        User.clearCookies()
-        setUserId(null)
+        auth.signOut();
     }
 
     useEffect(() => {
         if (isLoading) {
             getAllComments();
-            setUserId(User.getID());
-            setUserName(User.getName());
-            console.log("name",userName)
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    setUserId(user.uid);
+                } else {
+                    // User is signed out
+                    setUserId(null);
+                }
+                });
         }
 
         if (specComments) {
@@ -211,7 +209,7 @@ function CommentSectionTemplate(){
 
     return (
         <>
-            <GenBtn onClick={logout}>Clear Cookies</GenBtn>
+            <GenBtn onClick={logout}>Test logout</GenBtn>
             <LogInComponent/>
         </>
     )
