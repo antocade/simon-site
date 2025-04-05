@@ -31,6 +31,42 @@ GenBtn.defaultProps = {
 }
 // -- -- //
 
+// -- Navbar Button -- //
+const NavBtn = styled.button`
+    float: right;
+    margin-top: 5px;
+    margin-right: 10px;
+cursor: pointer;
+    border-radius: 3px;
+    font-size: 0.9375em;
+	padding: 0.5375em 1.375em;
+    background: none;
+    color: #00c3ff;
+	border-color: #00c3ff;
+
+    outline: none;
+    text-align: center;
+	text-decoration: none;
+	font-family: inherit;
+	font-weight: 600;
+	letter-spacing: 1px;
+	vertical-align: middle;
+	border: 1px solid;
+	transition: all 0.2s ease;
+	box-sizing: border-box;
+	text-shadow: 0 1px 0 rgba(0,0,0,0.01);
+
+    &:hover {
+        background: #00c3ff;
+        color: #fff;
+        border-color: #00c3ff;	
+    };`
+
+NavBtn.defaultProps = {
+    theme: "blue",
+}
+// -- -- //
+
 // -- Tab Buttons -- //
 const TabContainer = styled.div`
     // overflow: hidden;
@@ -84,4 +120,4 @@ TabR.defaultProps = {
 }
 // -- -- //
 
-export { GenBtn, TabContainer, Tab, TabL, TabR };
+export { GenBtn, NavBtn, TabContainer, Tab, TabL, TabR };

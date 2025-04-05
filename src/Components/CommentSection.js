@@ -13,22 +13,19 @@ import {
     updateDoc,
     arrayUnion,
 } from "firebase/firestore";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import "../styles/commentSection.css"
-import User from '../Components/SessionInfo.js'
 import pfp from '../pfp.JPG'
 
 function CommentSectionTemplate(){
-    // var userId = null
-
     const [ data, setData ] = useState([]);
     const [ isLoading, setLoading ] = useState(true)
     const [ userId, setUserId ] = useState()
+    const [ userName, setUserName ] = useState()
     const [ specComments, setSpecComments ] = useState(false)
     const filename = window.location.hash.substring(1)
 
     //TODO
-    // get name/userId from session
     // move logout btn/add login btn when logged out in place of
 
     const LogInComponent = () => {
@@ -81,24 +78,22 @@ function CommentSectionTemplate(){
         })
 
         return <CommentSection
-        //switch currentUser info over to session stuff
             currentUser={userId ? {
             currentUserId: userId,
             currentUserImg:
-                'https://ui-avatars.com/api/name=Test Account&background=random',
-            currentUserFullName: 'Test Account'
+            `https://ui-avatars.com/api/name=${userName}&background=random`,
+            currentUserFullName: userName
             }:null}
 
             commentData={cdata}
             logIn={{
             onLogin: () => {
-                    let email = "ajb.personal@hotmail.com"
-                    let pass = "fartballs"
+                    let email = prompt("Enter email")
+                    let pass = prompt("Enter password")
 
                     signInWithEmailAndPassword(auth, email, pass)
                         .then((userCredential) => {
-                            User.setID(userCredential.user.uid)
-                            setUserId(userCredential.user.uid)
+                            console.log("test...",userCredential.user.displayName)//
                             console.log(userCredential.user.uid) //can get more info from user
                         })
                         .catch((error) => {
@@ -111,14 +106,14 @@ function CommentSectionTemplate(){
             }}
             onSubmitAction={(data) => {
                 let type = userId == 1 ? "simon" : "comment"
-                createPost(data.text, type, 'Test Account')
+                createPost(data.text, type, userName)
             }}
 
             onReplyAction={(data) => {
                 let type = userId == 1 ? "simon_reply" : "reply"
                 let parentComment = data.repliedToCommentId
 
-                let replyID = createPost(data.text, type, 'Test Account')
+                let replyID = createPost(data.text, type, userName)
                 if (replyID) {
                     addReply(parentComment, replyID)
                 }
@@ -137,7 +132,7 @@ function CommentSectionTemplate(){
         querySnapshot.forEach((comment) => {
             const data = comment.data()
             // const fullEntry = JSON.stringify(comment.data())
-            console.log(`ID: ${comment.id} | Msg: ${data.msg}`);
+            // console.log(`ID: ${comment.id} | Msg: ${data.msg}`);
             allComments.push({
                 ...data,
                 id: comment.id,
@@ -182,15 +177,19 @@ function CommentSectionTemplate(){
         }
     }
 
-    const logout = () => {
-        User.clearCookies()
-        setUserId(null)
-    }
 
     useEffect(() => {
         if (isLoading) {
             getAllComments();
-            setUserId(User.getID());
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    setUserId(user.uid);
+                    setUserName(user.displayName);
+                } else {
+                    // User is signed out
+                    setUserId(null);
+                }
+                });
         }
 
         if (specComments) {
@@ -208,7 +207,6 @@ function CommentSectionTemplate(){
 
     return (
         <>
-            <GenBtn onClick={logout}>Clear Cookies</GenBtn>
             <LogInComponent/>
         </>
     )
