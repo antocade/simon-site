@@ -13,7 +13,7 @@ import {
     updateDoc,
     arrayUnion,
 } from "firebase/firestore";
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import "../styles/commentSection.css"
 import pfp from '../pfp.JPG'
 
@@ -81,7 +81,7 @@ function CommentSectionTemplate(){
             currentUser={userId ? {
             currentUserId: userId,
             currentUserImg:
-            `https://ui-avatars.com/api/name=${userName} Account&background=random`,
+            `https://ui-avatars.com/api/name=${userName}&background=random`,
             currentUserFullName: userName
             }:null}
 
@@ -106,14 +106,14 @@ function CommentSectionTemplate(){
             }}
             onSubmitAction={(data) => {
                 let type = userId == 1 ? "simon" : "comment"
-                createPost(data.text, type, 'Test Account')
+                createPost(data.text, type, userName)
             }}
 
             onReplyAction={(data) => {
                 let type = userId == 1 ? "simon_reply" : "reply"
                 let parentComment = data.repliedToCommentId
 
-                let replyID = createPost(data.text, type, 'Test Account')
+                let replyID = createPost(data.text, type, userName)
                 if (replyID) {
                     addReply(parentComment, replyID)
                 }
@@ -187,6 +187,7 @@ function CommentSectionTemplate(){
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     setUserId(user.uid);
+                    setUserName(user.displayName);
                 } else {
                     // User is signed out
                     setUserId(null);
