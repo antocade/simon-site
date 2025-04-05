@@ -177,9 +177,6 @@ function CommentSectionTemplate(){
         }
     }
 
-    const logout = () => {
-        auth.signOut();
-    }
 
     useEffect(() => {
         if (isLoading) {
@@ -210,7 +207,6 @@ function CommentSectionTemplate(){
 
     return (
         <>
-            <GenBtn onClick={logout}>Test logout</GenBtn>
             <LogInComponent/>
         </>
     )
