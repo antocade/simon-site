@@ -1,21 +1,56 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from 'react-router-dom'; 
 import { NavBtn } from "./Buttons";
 import { auth } from "../index.js";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 
-const logout = () => {
+function Navbar(){
+    const [ loginStatus, setLoginStatus ] = useState()
+    
+    const Conditional = (props) => {
+        const isLoggedIn = props.isLoggedIn;
+        if (isLoggedIn) {
+            return <NavBtn onClick={logout}>Logout</NavBtn>
+        } else {
+            return <NavBtn onClick={login}>Login</NavBtn>
+        }
+    }
+    const logout = () => {
         auth.signOut();
     }
 
-function Navbar(){
+    const login = () => {
+        let email = prompt("Enter email")
+        let pass = prompt("Enter password")
+
+        signInWithEmailAndPassword(auth, email, pass)
+            .then((userCredential) => {
+                console.log(userCredential.user.displayName)
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, ": ", errorMessage);
+            })
+    }
+
+    useEffect(() => {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    setLoginStatus(true)
+                } else {
+                    setLoginStatus(false)
+                }
+            });
+          });
+
     return (
         <div class="topnav">
           <h1>SIMONSITE TEST</h1>
           <NavLink exact to="/simon-site" className="nav-link" activeClassName="active">Home</NavLink>
           <NavLink to="/blog" className="nav-link" activeClassName="active">Blog</NavLink>
           <NavLink to="/about" className="nav-link" activeClassName="active">About</NavLink>
-          <NavBtn onClick={logout}>Logout</NavBtn> 
-          {/* Replace above with a switch for signup/login btns or logout button based on auth */}
+          <Conditional isLoggedIn={loginStatus}/>
         </div>
     )
 }
