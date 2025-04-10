@@ -4,47 +4,70 @@ import { NavBtn } from "./Buttons";
 import { auth } from "../index.js";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { LoginModal, LoginContent, CloseBtn } from "../Components/Modals.js"
+import { useForm } from "react-hook-form"
 
 function Navbar(){
     const [ loginStatus, setLoginStatus ] = useState()
     const [ isOpen, setIsOpen ] = useState(false)
+    const [ isSignUp, setSignUp ] = useState(false)
       
+    const {
+            register,
+            handleSubmit,
+            watch,
+            formState: { errors },
+        } = useForm()
+
     const Conditional = (props) => {
         const isLoggedIn = props.isLoggedIn;
         if (isLoggedIn) {
-            return <NavBtn onClick={logout}>Logout</NavBtn>
+            return <NavBtn onClick={logoutBtn}>Logout</NavBtn>
         } else {
-            return <NavBtn onClick={login}>Login</NavBtn>
+            return <NavBtn onClick={loginBtn}>Login</NavBtn>
         }
     }
 
     const close = () => {
         setIsOpen(false);
+        setSignUp(false)
     }
 
-    const logout = () => {
+    const logoutBtn = () => {
         auth.signOut();
+        //throw up a "signed out" modal
     }
 
-    const login = () => {
+    const loginBtn = () => {
         setIsOpen(true)
-        // let email = prompt("Enter email")
-        // let pass = prompt("Enter password")
+    }
 
-        // signInWithEmailAndPassword(auth, email, pass)
-        //     .then((userCredential) => {
-        //         console.log(userCredential.user.displayName)
-        //     })
-        //     .catch((error) => {
-        //         const errorCode = error.code;
-        //         const errorMessage = error.message;
-        //         console.log(errorCode, ": ", errorMessage);
-        //     })
+    const switchModal = () => {
+        setIsOpen(!isOpen)
+        setSignUp(!isSignUp)
+    }
+
+    const onLogin = (props) => {
+        signInWithEmailAndPassword(auth, props.email, props.pass)
+            .then((userCredential) => {
+                console.log(userCredential.user.displayName)
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, ": ", errorMessage);
+            })
+
+        setIsOpen(false)
+    }
+
+    const onSignup = (props) => {
+        //
     }
 
     const keyboardListener = (e) => {
         if (e.key === "Escape") {
-            setIsOpen(false);
+            setIsOpen(false)
+            setSignUp(false)
         }
     }
 
@@ -70,7 +93,38 @@ function Navbar(){
             <LoginModal isOpen={isOpen}>
                 <LoginContent>
                     <CloseBtn onClick={close}>X</CloseBtn>
-                    <p>Test</p>
+                    <form class="loginForm" onSubmit={handleSubmit(onLogin)}>
+                        {/* <input defaultValue="" {...register("toSearch")} /> */}
+                        <input {...register("email", {required: true})}/>
+                        <input {...register("pass", {required: true})}/>
+                        {errors.email && <span>This field is required</span>}
+                        {errors.pass && <span>This field is required</span>}
+                        <br/>
+                        <input type="submit"/>
+                        <br/>
+                        <br/>
+                        <span onClick={switchModal}>Sign up?</span>
+                    </form>
+                </LoginContent>
+            </LoginModal>
+
+            <LoginModal isOpen={isSignUp}>
+                <LoginContent>
+                    <CloseBtn onClick={close}>X</CloseBtn>
+                    <form class="loginForm" onSubmit={handleSubmit(onSignup)}>
+                        {/* <input defaultValue="" {...register("toSearch")} /> */}
+                        <input {...register("email", {required: true})}/>
+                        <input {...register("pass", {required: true})}/>
+                        <input {...register("user", {required: true})}/>
+                        {errors.email && <span>This field is required</span>}
+                        {errors.pass && <span>This field is required</span>}
+                        {errors.user && <span>This field is required</span>}
+                        <br/>
+                        <input type="submit"/>
+                        <br/>
+                        <br/>
+                        <span onClick={switchModal}>Or log in</span>
+                    </form>
                 </LoginContent>
             </LoginModal>
         </div>
