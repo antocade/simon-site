@@ -42,15 +42,23 @@ function Navbar(){
         //     })
     }
 
+    const keyboardListener = (e) => {
+        if (e.key === "Escape") {
+            setIsOpen(false);
+        }
+    }
+
     useEffect(() => {
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    setLoginStatus(true)
-                } else {
-                    setLoginStatus(false)
-                }
-            });
-          });
+        window.addEventListener("keydown", keyboardListener);
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setLoginStatus(true)
+            } else {
+                setLoginStatus(false)
+            }
+        });
+    });
 
     return (
         <div class="topnav">
