@@ -125,37 +125,43 @@ function Navbar(){
             <Conditional isLoggedIn={loginStatus}/>
             <LoginModal isOpen={isOpen}>
                 <LoginContent>
-                    <CloseBtn onClick={close}>X</CloseBtn>
+                    <span><CloseBtn onClick={close}>&#x2715;</CloseBtn></span>
+                    <h2>Login</h2>
                     <form class="loginForm" onSubmit={handleSubmit(onLogin)}>
-                        {/* <input defaultValue="" {...register("toSearch")} /> */}
+                        <label>Email</label>
                         <input {...register("email", {required: true})}/>
+                        <label>Password</label>
                         <input {...register("pass", {required: true})}/>
                         {errors.email && <span>This field is required</span>}
                         {errors.pass && <span>This field is required</span>}
                         <br/>
-                        <input type="submit"/>
+                        <input id="modalSubmit" value="Sign In" type="submit"/>
                         <br/>
                         <br/>
-                        <span onClick={switchModal}>Sign up?</span>
+                        <span id="modalSwitch" onClick={switchModal}>Don't have an account?</span>
                     </form>
                 </LoginContent>
             </LoginModal>
 
             <LoginModal isOpen={isSignUp}>
                 <LoginContent>
-                    <CloseBtn onClick={close}>X</CloseBtn>
+                    <span><CloseBtn onClick={close}>&#x2715;</CloseBtn></span>
+                    <h2>Sign Up</h2>
                     <form class="loginForm" onSubmit={handleSubmit(onSignup)}>
-                        <input {...register("email", {required: true})}/>
-                        <input {...register("pass", {required: true})}/>
+                        <label>Username</label>
                         <input {...register("user", {required: true})}/>
+                        <label>Email</label>
+                        <input {...register("email", {required: true})}/>
+                        <label>Password</label>
+                        <input {...register("pass", {required: true})}/>
                         {errors.email && <span>This field is required</span>}
                         {errors.pass && <span>This field is required</span>}
                         {errors.user && <span>This field is required</span>}
                         <br/>
-                        <input type="submit"/>
+                        <input id="modalSubmit" value="Sign Up" type="submit"/>
                         <br/>
                         <br/>
-                        <span onClick={switchModal}>Or log in</span>
+                        <span id="modalSwitch" onClick={switchModal}>Or log in</span>
                     </form>
                 </LoginContent>
             </LoginModal>
