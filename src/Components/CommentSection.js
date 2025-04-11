@@ -1,6 +1,5 @@
-import { React, useEffect, useState, cloneElement } from "react";
+import { React, useEffect, useState } from "react";
 import { db, auth } from '../index.js';
-import { GenBtn } from '../Components/Buttons.js'
 import { CommentSection } from "react-comments-section";
 import "react-comments-section/dist/index.css"
 import { 
@@ -13,7 +12,7 @@ import {
     updateDoc,
     arrayUnion,
 } from "firebase/firestore";
-import { onAuthStateChanged, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import "../styles/commentSection.css"
 import pfp from '../pfp.JPG'
 
@@ -24,9 +23,6 @@ function CommentSectionTemplate(){
     const [ userName, setUserName ] = useState()
     const [ specComments, setSpecComments ] = useState(false)
     const filename = window.location.hash.substring(1)
-
-    //TODO
-    // move logout btn/add login btn when logged out in place of
 
     const LogInComponent = () => {
         var cdata = []
@@ -88,19 +84,7 @@ function CommentSectionTemplate(){
             commentData={cdata}
             logIn={{
             onLogin: () => {
-                    let email = prompt("Enter email")
-                    let pass = prompt("Enter password")
-
-                    signInWithEmailAndPassword(auth, email, pass)
-                        .then((userCredential) => {
-                            console.log("test...",userCredential.user.displayName)//
-                            console.log(userCredential.user.uid) //can get more info from user
-                        })
-                        .catch((error) => {
-                            const errorCode = error.code;
-                            const errorMessage = error.message;
-                            console.log(errorCode, ": ", errorMessage);
-                        })
+                    //not needed
             },
             signupLink: 'http://localhost:3001/'
             }}

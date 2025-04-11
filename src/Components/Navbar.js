@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from 'react-router-dom'; 
 import { NavBtn } from "./Buttons";
 import { auth } from "../index.js";
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { LoginModal, LoginContent, CloseBtn } from "../Components/Modals.js"
 import { useForm } from "react-hook-form"
+
+//TODO
+//Fix login issue (field required even though good?)
+//Add login/signup indications
 
 function Navbar(){
     const [ loginStatus, setLoginStatus ] = useState()
@@ -67,7 +71,6 @@ function Navbar(){
             if (props.user == "simon" || props.user == "Simon" || props.user == "Simon Stanton" || props.user == "simon Stanton" || props.user == "Simon stanton") {
                 throw new Error("Invalid username")
             } else {
-                const auth = getAuth();
                 createUserWithEmailAndPassword(auth, props.email, props.pass)
                 .then((userCredential) => {
                     // Signed up 
