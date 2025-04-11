@@ -7,7 +7,6 @@ import { LoginModal, LoginContent, CloseBtn } from "../Components/Modals.js"
 import { useForm } from "react-hook-form"
 
 //TODO
-//Fix login issue (field required even though good?)
 //Add login/signup indications
 
 function Navbar(){
@@ -52,58 +51,62 @@ function Navbar(){
 
     //Need indication of succesful login
     const onLogin = (props) => {
-        signInWithEmailAndPassword(auth, props.email, props.pass)
+        if (props.login_email == "" || props.login_pass == "") {
+            alert("Fill all fields")
+        } else {
+            signInWithEmailAndPassword(auth, props.login_email, props.login_pass)
             .then((userCredential) => {
                 console.log(userCredential.user.displayName)
+                close()
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 alert(errorCode, ": ", errorMessage);
             })
-
-        close()
+        } 
     }
 
     //Need indication of succesful signup
     const onSignup = (props) => {
-        try {
-            if (props.user == "simon" || props.user == "Simon" || props.user == "Simon Stanton" || props.user == "simon Stanton" || props.user == "Simon stanton") {
-                throw new Error("Invalid username")
-            } else {
-                createUserWithEmailAndPassword(auth, props.email, props.pass)
-                .then((userCredential) => {
-                    // Signed up 
-                    const user = userCredential.user;
-                    
-                    updateProfile(auth.currentUser, {
-                        displayName: props.user
-                    }).then(() => {
-                        // Profile updated!
-                        // ...
-                    }).catch((error) => {
-                        console.log(error)
+        if (props.sign_email == "" || props.sign_pass == "" || props.sign_user == "") {
+            alert("Fill all fields")
+        } else {
+            try {
+                if (props.user == "simon" || props.user == "Simon" || props.user == "Simon Stanton" || props.user == "simon Stanton" || props.user == "Simon stanton") {
+                    throw new Error("Invalid username")
+                } else {
+                    createUserWithEmailAndPassword(auth, props.sign_email, props.sign_pass)
+                    .then((userCredential) => {
+                        // Signed up 
+                        const user = userCredential.user;
+                        
+                        updateProfile(auth.currentUser, {
+                            displayName: props.sign_user
+                        }).then(() => {
+                            // Profile updated!
+                            close()
+                        }).catch((error) => {
+                            console.log(error)
+                        });
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        alert(errorCode, ": ", errorMessage)
+                        // ..
                     });
-
-                    close()
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    alert(errorCode, ": ", errorMessage)
-                    // ..
-                });
+                }
+            } catch (e) {
+                alert("Invalid username")
+                
             }
-        } catch (e) {
-            alert("Invalid username")
-            
         }
     }
 
     const keyboardListener = (e) => {
         if (e.key === "Escape") {
-            setIsOpen(false)
-            setSignUp(false)
+            close()
         }
     }
 
@@ -132,16 +135,14 @@ function Navbar(){
                     <h2>Login</h2>
                     <form class="loginForm" onSubmit={handleSubmit(onLogin)}>
                         <label>Email</label>
-                        <input {...register("email", {required: true})}/>
+                        <input {...register("login_email")}/>
                         <label>Password</label>
-                        <input {...register("pass", {required: true})}/>
-                        {errors.email && <span>This field is required</span>}
-                        {errors.pass && <span>This field is required</span>}
+                        <input {...register("login_pass")}/>
                         <br/>
-                        <input id="modalSubmit" value="Sign In" type="submit"/>
+                        <input class="modalSubmit" value="Sign In" type="submit"/>
                         <br/>
                         <br/>
-                        <span id="modalSwitch" onClick={switchModal}>Don't have an account?</span>
+                        <span class="modalSwitch" onClick={switchModal}>Don't have an account?</span>
                     </form>
                 </LoginContent>
             </LoginModal>
@@ -152,19 +153,16 @@ function Navbar(){
                     <h2>Sign Up</h2>
                     <form class="loginForm" onSubmit={handleSubmit(onSignup)}>
                         <label>Username</label>
-                        <input {...register("user", {required: true})}/>
+                        <input {...register("sign_user")}/>
                         <label>Email</label>
-                        <input {...register("email", {required: true})}/>
+                        <input {...register("sign_email")}/>
                         <label>Password</label>
-                        <input {...register("pass", {required: true})}/>
-                        {errors.email && <span>This field is required</span>}
-                        {errors.pass && <span>This field is required</span>}
-                        {errors.user && <span>This field is required</span>}
+                        <input {...register("sign_pass")}/>
                         <br/>
-                        <input id="modalSubmit" value="Sign Up" type="submit"/>
+                        <input class="modalSubmit" value="Sign Up" type="submit"/>
                         <br/>
                         <br/>
-                        <span id="modalSwitch" onClick={switchModal}>Or log in</span>
+                        <span class="modalSwitch" onClick={switchModal}>Or log in</span>
                     </form>
                 </LoginContent>
             </LoginModal>

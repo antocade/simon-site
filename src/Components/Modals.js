@@ -51,7 +51,7 @@ const LoginContent = styled.div`
         border-color: black;
     }
 
-    & #modalSubmit {
+    & .modalSubmit {
         width: 30%;
         height: 45px;
         margin: auto;
@@ -62,16 +62,16 @@ const LoginContent = styled.div`
         border-radius: 5px;
     }
 
-    & #modalSubmit:hover {
+    & .modalSubmit:hover {
         cursor: pointer;
         background-color: #0fc246;
     }
 
-    & #modalSwitch {
+    & .modalSwitch {
         color: blue;
     }
 
-    & #modalSwitch:hover {
+    & .modalSwitch:hover {
         cursor: pointer;
         text-decoration: underline;
     }
@@ -91,8 +91,4 @@ const CloseBtn = styled.span`
         }
 `
 
-const SignupModal = styled.div`
-    `
-
-
-export { LoginModal, LoginContent, CloseBtn, SignupModal };
+export { LoginModal, LoginContent, CloseBtn };
