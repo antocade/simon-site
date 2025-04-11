@@ -6,9 +6,6 @@ import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndP
 import { LoginModal, LoginContent, CloseBtn } from "../Components/Modals.js"
 import { useForm } from "react-hook-form"
 
-//TODO
-//Add login/signup indications
-
 function Navbar(){
     const [ loginStatus, setLoginStatus ] = useState()
     const [ isOpen, setIsOpen ] = useState(false)
@@ -37,7 +34,7 @@ function Navbar(){
 
     const logoutBtn = () => {
         auth.signOut();
-        //throw up a "signed out" modal
+        alert("Successfully signed out")
     }
 
     const loginBtn = () => {
@@ -49,7 +46,6 @@ function Navbar(){
         setSignUp(!isSignUp)
     }
 
-    //Need indication of succesful login
     const onLogin = (props) => {
         if (props.login_email == "" || props.login_pass == "") {
             alert("Fill all fields")
@@ -57,6 +53,7 @@ function Navbar(){
             signInWithEmailAndPassword(auth, props.login_email, props.login_pass)
             .then((userCredential) => {
                 console.log(userCredential.user.displayName)
+                alert("Successfully logged in!")
                 close()
             })
             .catch((error) => {
@@ -67,7 +64,6 @@ function Navbar(){
         } 
     }
 
-    //Need indication of succesful signup
     const onSignup = (props) => {
         if (props.sign_email == "" || props.sign_pass == "" || props.sign_user == "") {
             alert("Fill all fields")
@@ -84,7 +80,7 @@ function Navbar(){
                         updateProfile(auth.currentUser, {
                             displayName: props.sign_user
                         }).then(() => {
-                            // Profile updated!
+                            alert("Successfully created account!")
                             close()
                         }).catch((error) => {
                             console.log(error)
