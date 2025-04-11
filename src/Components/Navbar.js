@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from 'react-router-dom'; 
 import { NavBtn } from "./Buttons";
 import { auth } from "../index.js";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { LoginModal, LoginContent, CloseBtn } from "../Components/Modals.js"
 import { useForm } from "react-hook-form"
 
@@ -46,6 +46,7 @@ function Navbar(){
         setSignUp(!isSignUp)
     }
 
+    //Need indication of succesful login
     const onLogin = (props) => {
         signInWithEmailAndPassword(auth, props.email, props.pass)
             .then((userCredential) => {
@@ -54,14 +55,46 @@ function Navbar(){
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorCode, ": ", errorMessage);
+                alert(errorCode, ": ", errorMessage);
             })
 
-        setIsOpen(false)
+        close()
     }
 
+    //Need indication of succesful signup
     const onSignup = (props) => {
-        //
+        try {
+            if (props.user == "simon" || props.user == "Simon" || props.user == "Simon Stanton" || props.user == "simon Stanton" || props.user == "Simon stanton") {
+                throw new Error("Invalid username")
+            } else {
+                const auth = getAuth();
+                createUserWithEmailAndPassword(auth, props.email, props.pass)
+                .then((userCredential) => {
+                    // Signed up 
+                    const user = userCredential.user;
+                    
+                    updateProfile(auth.currentUser, {
+                        displayName: props.user
+                    }).then(() => {
+                        // Profile updated!
+                        // ...
+                    }).catch((error) => {
+                        console.log(error)
+                    });
+
+                    close()
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert(errorCode, ": ", errorMessage)
+                    // ..
+                });
+            }
+        } catch (e) {
+            alert("Invalid username")
+            
+        }
     }
 
     const keyboardListener = (e) => {
@@ -112,7 +145,6 @@ function Navbar(){
                 <LoginContent>
                     <CloseBtn onClick={close}>X</CloseBtn>
                     <form class="loginForm" onSubmit={handleSubmit(onSignup)}>
-                        {/* <input defaultValue="" {...register("toSearch")} /> */}
                         <input {...register("email", {required: true})}/>
                         <input {...register("pass", {required: true})}/>
                         <input {...register("user", {required: true})}/>
