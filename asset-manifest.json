@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/simon-site/static/css/main.068543d5.css",
-    "main.js": "/simon-site/static/js/main.f48aa5d5.js",
+    "main.css": "/simon-site/static/css/main.d5f41f0f.css",
+    "main.js": "/simon-site/static/js/main.04fca118.js",
     "static/media/pfp.JPG": "/simon-site/static/media/pfp.0a7b0077ada85e3877ab.JPG",
     "static/media/svg": "/simon-site/static/media/2a0bc34f2fdf6d6b.6e0f8a48a90f41998086.svg",
     "index.html": "/simon-site/index.html",
@@ -9,11 +9,11 @@
     "static/media/exampleWordDoc1_02-25-25.docx": "/simon-site/static/media/exampleWordDoc1_02-25-25.33077e5875beb52212bf.docx",
     "static/media/Test_Title_Doc_03-01-25.docx": "/simon-site/static/media/Test_Title_Doc_03-01-25.b0a2c0f8a8d4462dcd76.docx",
     "static/media/exampleWordDoc2_01-25-25.docx": "/simon-site/static/media/exampleWordDoc2_01-25-25.db346d691d7acc4dc262.docx",
-    "main.068543d5.css.map": "/simon-site/static/css/main.068543d5.css.map",
-    "main.f48aa5d5.js.map": "/simon-site/static/js/main.f48aa5d5.js.map"
+    "main.d5f41f0f.css.map": "/simon-site/static/css/main.d5f41f0f.css.map",
+    "main.04fca118.js.map": "/simon-site/static/js/main.04fca118.js.map"
   },
   "entrypoints": [
-    "static/css/main.068543d5.css",
-    "static/js/main.f48aa5d5.js"
+    "static/css/main.d5f41f0f.css",
+    "static/js/main.04fca118.js"
   ]
 }
