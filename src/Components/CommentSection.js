@@ -35,7 +35,7 @@ function CommentSectionTemplate(){
                         fullName: comment.name,
                         avatarUrl: pfp,
                         text: comment.msg,
-                        timestamp: comment.date, //fix, make timestamp
+                        timestamp: comment.date,
                         replies: [],
                     }
                 } else {
@@ -45,7 +45,7 @@ function CommentSectionTemplate(){
                         fullName: comment.name,
                         avatarUrl: `https://ui-avatars.com/api/name=${comment.name}&background=random`,
                         text: comment.msg,
-                        timestamp: comment.date, //fix, make timestamp
+                        timestamp: comment.date,
                         replies: [],
                     }
                 }
@@ -129,11 +129,11 @@ function CommentSectionTemplate(){
     }
 
     async function createPost(msg, type, name) {
-        let postDate = new Date().toLocaleString();
+        let postDate = getStandardDate();
     
         try {
             const docRef = await addDoc(collection(db, "CommentSections/" + filename + "/comments"), {
-                date: postDate, //replace with timestamp
+                date: postDate,
                 msg: msg,
                 name: name,
                 replies: [],
@@ -161,6 +161,11 @@ function CommentSectionTemplate(){
         }
     }
 
+    const getStandardDate = () => {
+        var d = new Date();
+        var standard = d.toLocaleDateString() + "T" + d.toLocaleTimeString().slice(0, -5) + "UTC";
+        return standard;
+    }
 
     useEffect(() => {
         if (isLoading) {
