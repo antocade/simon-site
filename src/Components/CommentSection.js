@@ -35,7 +35,7 @@ function CommentSectionTemplate(){
                         fullName: comment.name,
                         avatarUrl: pfp,
                         text: comment.msg,
-                        timestamp: comment.date + "+" + new Date().getTimezoneOffset(),
+                        timestamp: comment.date + offsetFormat(new Date().getTimezoneOffset()),
                         replies: [],
                     }
                 } else {
@@ -45,7 +45,7 @@ function CommentSectionTemplate(){
                         fullName: comment.name,
                         avatarUrl: `https://ui-avatars.com/api/name=${comment.name}&background=random`,
                         text: comment.msg,
-                        timestamp: comment.date + "+" + new Date().getTimezoneOffset(),
+                        timestamp: comment.date + offsetFormat(new Date().getTimezoneOffset()),
                         replies: [],
                     }
                 }
@@ -61,7 +61,7 @@ function CommentSectionTemplate(){
                                     fullName: entry.name,
                                     avatarUrl: `https://ui-avatars.com/api/name=${entry.name}&background=random`,
                                     text: entry.msg,
-                                    timestamp: entry.date + "+" + new Date().getTimezoneOffset()
+                                    timestamp: entry.date + offsetFormat(new Date().getTimezoneOffset())
                                 }
                                 temp.replies.push(replyObj)
                             }
@@ -163,9 +163,30 @@ function CommentSectionTemplate(){
 
     const getStandardDate = () => {
         var d = new Date();
-        var standard = d.toLocaleDateString() + "T" + d.toLocaleTimeString().slice(0, -5) + "UTC";
+        var h = d.getHours();
+        var m = d.getMinutes();
+        var s = d.getSeconds();
+
+        h = h < 10 ? "0" + h : h
+        m = m < 10 ? "0" + m : m
+        s = s < 10 ? "0" + s : s
+        var standard = d.toLocaleDateString() + "T" + h + ":" + m + ":" + s
         return standard;
     }
+
+    //From gilly3 https://stackoverflow.com/a/14638191
+    function ii(i, len = 2) {
+        return (i + "").padStart(len, "0");
+    }
+
+    function offsetFormat(tz) {
+        const sign = tz > 0 ? "-" : "+"; // +08:00 == -480, signs are reversed
+        const tzv = Math.abs(tz);
+        const tzHrs = Math.floor(tzv / 60);
+        const tzMin = tzv % 60;
+        return sign + ii(tzHrs) + ":" + ii(tzMin);
+    }
+    // ----
 
     useEffect(() => {
         if (isLoading) {
