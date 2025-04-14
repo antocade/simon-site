@@ -35,7 +35,7 @@ function CommentSectionTemplate(){
                         fullName: comment.name,
                         avatarUrl: pfp,
                         text: comment.msg,
-                        timestamp: comment.date,
+                        timestamp: comment.date + "+" + new Date().getTimezoneOffset(),
                         replies: [],
                     }
                 } else {
@@ -45,7 +45,7 @@ function CommentSectionTemplate(){
                         fullName: comment.name,
                         avatarUrl: `https://ui-avatars.com/api/name=${comment.name}&background=random`,
                         text: comment.msg,
-                        timestamp: comment.date,
+                        timestamp: comment.date + "+" + new Date().getTimezoneOffset(),
                         replies: [],
                     }
                 }
@@ -61,7 +61,7 @@ function CommentSectionTemplate(){
                                     fullName: entry.name,
                                     avatarUrl: `https://ui-avatars.com/api/name=${entry.name}&background=random`,
                                     text: entry.msg,
-                                    timestamp: entry.date
+                                    timestamp: entry.date + "+" + new Date().getTimezoneOffset()
                                 }
                                 temp.replies.push(replyObj)
                             }
