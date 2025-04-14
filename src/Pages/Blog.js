@@ -17,6 +17,7 @@ const stories = importAllStories(require.context('../../public/story-upload', fa
 let i = 0
 stories.forEach((name) => {
     name = name.slice(2, (name.length - 5))
+    name = name.replaceAll("_", " ")
     stories[i] = name;
     i++;
 })
@@ -58,6 +59,7 @@ function Blog(){
     }
     
     function getFileContents(file) {
+        file = file.replaceAll(" ", "_")
         var filename = "./story-upload/" + file + ".docx"
         fetch(filename) // fetch text file
             .then((resp) => resp.text())
@@ -107,9 +109,8 @@ function Blog(){
     if (searchElement == "" || searchElement == undefined) {
         visibleTiles = stories;
     } else {
-        visibleTiles = stories.filter(str => str.includes(searchElement));
+        visibleTiles = stories.filter(str => str.toLowerCase().includes(searchElement.toLowerCase()));
     }
-    console.log(visibleTiles);
 
     return(
         <>
@@ -128,7 +129,7 @@ function Blog(){
 
                 <div class="grid">   
                     {
-                        visibleTiles.map(e => <Tile story={e} file={namedFileList.get(e)}/>)
+                        visibleTiles.map(e => <Tile story={e.replaceAll(" ", "_")} file={namedFileList.get(e.replaceAll(" ", "_"))}/>)
                     }
                 </div>
             </div>
