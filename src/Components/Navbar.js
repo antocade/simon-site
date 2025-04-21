@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from 'react-router-dom'; 
+import { NavLink, useLocation } from 'react-router-dom'; 
 import { NavBtn } from "./Buttons";
 import { auth } from "../index.js";
 import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
@@ -106,6 +106,8 @@ function Navbar(){
         }
     }
 
+    const location = useLocation()
+
     useEffect(() => {
         window.addEventListener("keydown", keyboardListener);
 
@@ -116,14 +118,22 @@ function Navbar(){
                 setLoginStatus(false)
             }
         });
-    });
+
+        if (location.hash) {
+            const element = document.querySelector(location.hash)
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' })
+            }
+        }
+    }, [location.hash]);
 
     return (
         <div class="topnav">
             <h1>SIMONSITE TEST</h1>
             <NavLink exact to="/simon-site" className="nav-link" activeClassName="active">Home</NavLink>
-            <NavLink to="/blog" className="nav-link" activeClassName="active">Blog</NavLink>
-            <NavLink to="/about" className="nav-link" activeClassName="active">About</NavLink>
+            {/* <NavLink to="/blog" className="nav-link" activeClassName="active">Blog</NavLink> */}
+            <NavLink to="#sect2" className="nav-link" activeClassName="active">Sect2</NavLink>
+            <NavLink to="#sect3" className="nav-link" activeClassName="active">Sect3</NavLink>
             <Conditional isLoggedIn={loginStatus}/>
             <LoginModal isOpen={isOpen}>
                 <LoginContent>
