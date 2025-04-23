@@ -18,7 +18,8 @@ section {
 }
 
 #sect1 {
-  background-color: red;
+  padding-top: 35px;
+  background-color: black;
 }
 
 #sect2 {
@@ -33,6 +34,8 @@ section {
 .topnav {
   background-color: gray;
   overflow: hidden;
+  position: fixed;
+  width: 100%;
 }
 
 .topnav h1{
